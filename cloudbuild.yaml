@@ -4,19 +4,19 @@ steps:
     name: "gcr.io/cloud-builders/yarn"
     args: ["install"]
     env:
-      CI: true
+      - "CI=true"
   - id: Run Web Tests
     dir: web
     name: "gcr.io/cloud-builders/yarn"
     args: ["test"]
     env:
-      CI: true
+      - "CI=true"
   - id: Build Web Assets
     dir: web
     name: "gcr.io/cloud-builders/yarn"
     args: ["build"]
     env:
-      CI: true
+      - "CI=true"
   - name: gcr.io/cloud-builders/gsutil
     waitFor:
       - Run Web Tests

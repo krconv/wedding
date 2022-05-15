@@ -26,7 +26,7 @@ const useStyles = createStyles((theme) => ({
 export const Landing: React.FC = () => {
   const { classes } = useStyles();
   return (
-    <Group className={classes.root} direction="column">
+    <Group id="landing" className={classes.root} direction="column">
       <Header />
       <BackgroundImage
         className={classes.image}
