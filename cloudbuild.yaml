@@ -2,12 +2,25 @@ steps:
   - id: Download Web Dependencies
     dir: web
     name: "gcr.io/cloud-builders/yarn"
-    args: ["install", " --frozen-lockfile"]
+    args: ["install"]
+    env:
+      CI: true
+  - id: Run Web Tests
+    dir: web
+    name: "gcr.io/cloud-builders/yarn"
+    args: ["test"]
+    env:
+      CI: true
   - id: Build Web Assets
     dir: web
     name: "gcr.io/cloud-builders/yarn"
     args: ["build"]
+    env:
+      CI: true
   - name: gcr.io/cloud-builders/gsutil
+    waitFor:
+      - Run Web Tests
+      - Build Web Assets
     dir: web
     args: [
         "-m", # multi-thread
@@ -18,5 +31,6 @@ steps:
         "./build", # from
         "${_WEB_DEPLOY_BUCKET}", # to
       ]
-# options:
-#   logging: CLOUD_LOGGING_ONLY
+
+options:
+  logging: CLOUD_LOGGING_ONLY
