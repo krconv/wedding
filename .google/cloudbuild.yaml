@@ -18,3 +18,6 @@ steps:
         "./build", # from
         "${_WEB_DEPLOY_BUCKET}", # to
       ]
+
+options:
+  logging: CLOUD_LOGGING_ONLY
