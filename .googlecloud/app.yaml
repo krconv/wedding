@@ -4,6 +4,11 @@ entrypoint: gunicorn --bind :$PORT --worker-class uvicorn.workers.UvicornWorker 
 
 # these paths rely on the bundle-deploy-dir.sh script
 handlers:
+  - url: /
+    static_files: build/index.html
+    upload: web/build/index.html
+    secure: always
+    redirect_http_response_code: 301
   - url: /api.*
     script: auto
     secure: always
