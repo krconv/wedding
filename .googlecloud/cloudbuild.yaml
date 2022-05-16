@@ -1,46 +1,57 @@
 steps:
-  # - id: Download Web Dependencies
-  #   waitFor:
-  #     - " - "
-  #   dir: web
-  #   name: "gcr.io/cloud-builders/yarn"
-  #   args: ["install"]
-  #   env:
-  #     - "CI=true"
-  # - id: Run Web Tests
-  #   dir: web
-  #   name: "gcr.io/cloud-builders/yarn"
-  #   args: ["test"]
-  #   env:
-  #     - "CI=true"
-  # - id: Build Web Assets
-  #   dir: web
-  #   name: "gcr.io/cloud-builders/yarn"
-  #   args: ["build"]
-  #   env:
-  #     - "CI=true"
-  - id: Export API Dependencies
+  - id: Download Web Dependencies
     waitFor:
-      - " - "
-    dir: api
-    name: "gcr.io/cloud-builders/docker"
-    args: ["docker.io/acidrain/python-poetry:3.9", "run"]
+      - "-"
+    dir: web
+    name: "gcr.io/cloud-builders/yarn"
+    args: ["install"]
     env:
       - "CI=true"
-  # - name: gcr.io/cloud-builders/gsutil
-  #   waitFor:
-  #     - Run Web Tests
-  #     - Build Web Assets
-  #   dir: web
-  #   args: [
-  #       "-m", # multi-thread
-  #       "rsync",
-  #       "-r", # recursive
-  #       "-c", # compare checksums
-  #       "-d", # delete extra files
-  #       "./build", # from
-  #       "${_WEB_DEPLOY_BUCKET}", # to
-  #     ]
+  - id: Run Web Tests
+    dir: web
+    name: "gcr.io/cloud-builders/yarn"
+    args: ["test"]
+    env:
+      - "CI=true"
+  - id: Build Web Assets
+    dir: web
+    name: "gcr.io/cloud-builders/yarn"
+    args: ["build"]
+    env:
+      - "CI=true"
+  - id: Run Backend Tests
+    name: gcr.io/cloud-builders/docker
+    args:
+      - run
+      - "--volume"
+      - "/workspace:/app"
+      - "--workdir"
+      - /app/api
+      - "docker.io/acidrain/python-poetry:3.10-alpine"
+      - /bin/sh
+      - "-c"
+      - "apk add --no-cache gcc libffi-dev musl-dev postgresql-dev build-base && poetry install && poetry run pytest"
+    waitFor:
+      - "-"
+  - id: Bundle Deploy Directory
+    waitFor:
+      - Run Web Tests
+      - Build Web Assets
+      - Run Backend Tests
+    name: gcr.io/cloud-builders/docker
+    args:
+      - run
+      - --volume
+      - /workspace:/app
+      - --workdir
+      - /app
+      - "docker.io/acidrain/python-poetry:3.10-alpine"
+      - scripts/bundle-deploy-dir.sh
+  - id: Deploy to App Engine
+    waitFor:
+      - Bundle Deploy Directory
+    name: gcr.io/cloud-builders/gcloud
+    args: ["app", "deploy", "deploy/app.yaml"]
 
 options:
   logging: CLOUD_LOGGING_ONLY

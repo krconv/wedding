@@ -36,7 +36,7 @@ echo "Bundling the the API code..."
 if type poetry >/dev/null 2>&1; then
     (cd api && poetry export --without-hashes --output requirements.txt)
 else
-    docker run --volume $(pwd)/api:/api --workdir /api docker.io/acidrain/python-poetry:3.9 poetry export --without-hashes --output requirements.txt
+    docker run --volume $(pwd)/api:/api --workdir /api --rm docker.io/acidrain/python-poetry:3.9 poetry export --without-hashes --output requirements.txt
 fi
 cp -r api/{api,requirements.txt} deploy/
 
