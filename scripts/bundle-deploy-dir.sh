@@ -35,6 +35,7 @@ else
     docker run --volume $(pwd)/api:/api --workdir /api --rm docker.io/acidrain/python-poetry:3.10 poetry export --without-hashes --output requirements.txt
 fi
 cp -r api deploy/
+cp api/requirements.txt deploy/
 
 # Copy the deploy config
 echo "Bundling the the deploy config..."
