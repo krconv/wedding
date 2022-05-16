@@ -4,7 +4,7 @@ if ! type docker >/dev/null 2>&1 && ! type poetry >/dev/null 2>&1; then
     echo "Docker nor poetry are installed, aborting..."
     exit 1
 fi
-cd "$(dirname "${BASH_SOURCE[0]}")/.." # cd to root directory
+cd "$(dirname $BASH_SOURCE)/.." # cd to root directory
 
 if [ -d deploy ]; then
     echo "Cleaning the build directory..."
