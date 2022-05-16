@@ -1,0 +1,57 @@
+steps:
+  - id: Download Web Dependencies
+    waitFor:
+      - "-"
+    dir: web
+    name: "gcr.io/cloud-builders/yarn"
+    args: ["install"]
+    env:
+      - "CI=true"
+  - id: Run Web Tests
+    dir: web
+    name: "gcr.io/cloud-builders/yarn"
+    args: ["test"]
+    env:
+      - "CI=true"
+  - id: Build Web Assets
+    dir: web
+    name: "gcr.io/cloud-builders/yarn"
+    args: ["build"]
+    env:
+      - "CI=true"
+  - id: Run API Tests
+    name: gcr.io/cloud-builders/docker
+    args:
+      - run
+      - "--volume"
+      - "/workspace:/app"
+      - "--workdir"
+      - /app/api
+      - "docker.io/acidrain/python-poetry:3.10-alpine"
+      - /bin/sh
+      - "-c"
+      - "apk add --no-cache gcc libffi-dev musl-dev postgresql-dev build-base && poetry install && poetry run pytest"
+    waitFor:
+      - "-"
+  - id: Bundle Deploy Directory
+    waitFor:
+      - Build Web Assets
+    name: gcr.io/cloud-builders/docker
+    args:
+      - run
+      - --volume
+      - /workspace:/app
+      - --workdir
+      - /app
+      - "docker.io/acidrain/python-poetry:3.10-alpine"
+      - scripts/bundle-deploy-dir.sh
+  - id: Deploy to App Engine
+    waitFor:
+      - Run Web Tests
+      - Run API Tests
+      - Bundle Deploy Directory
+    name: gcr.io/cloud-builders/gcloud
+    args: ["app", "deploy", "deploy/app.yaml"]
+
+options:
+  logging: CLOUD_LOGGING_ONLY
