@@ -19,7 +19,7 @@ steps:
     args: ["build"]
     env:
       - "CI=true"
-  - id: Run Backend Tests
+  - id: Run API Tests
     name: gcr.io/cloud-builders/docker
     args:
       - run
@@ -35,9 +35,7 @@ steps:
       - "-"
   - id: Bundle Deploy Directory
     waitFor:
-      - Run Web Tests
       - Build Web Assets
-      - Run Backend Tests
     name: gcr.io/cloud-builders/docker
     args:
       - run
@@ -49,6 +47,8 @@ steps:
       - scripts/bundle-deploy-dir.sh
   - id: Deploy to App Engine
     waitFor:
+      - Run Web Tests
+      - Run API Tests
       - Bundle Deploy Directory
     name: gcr.io/cloud-builders/gcloud
     args: ["app", "deploy", "deploy/app.yaml"]
