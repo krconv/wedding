@@ -17,7 +17,7 @@
       "request": "launch",
       "module": "uvicorn",
       "cwd": "${workspaceFolder}/api",
-      "args": ["main:app"],
+      "args": ["api.main:app"],
       "port": 8080,
       "justMyCode": true,
       "autoReload": {

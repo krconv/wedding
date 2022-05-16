@@ -1,0 +1,12 @@
+.gcloudignore
+
+.git
+.gitignore
+
+# Python pycache:
+
+**pycache**/
+
+/setup.cfg
+
+node_modules/

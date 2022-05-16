@@ -1,0 +1,46 @@
+steps:
+  # - id: Download Web Dependencies
+  #   waitFor:
+  #     - " - "
+  #   dir: web
+  #   name: "gcr.io/cloud-builders/yarn"
+  #   args: ["install"]
+  #   env:
+  #     - "CI=true"
+  # - id: Run Web Tests
+  #   dir: web
+  #   name: "gcr.io/cloud-builders/yarn"
+  #   args: ["test"]
+  #   env:
+  #     - "CI=true"
+  # - id: Build Web Assets
+  #   dir: web
+  #   name: "gcr.io/cloud-builders/yarn"
+  #   args: ["build"]
+  #   env:
+  #     - "CI=true"
+  - id: Export API Dependencies
+    waitFor:
+      - " - "
+    dir: api
+    name: "gcr.io/cloud-builders/docker"
+    args: ["docker.io/acidrain/python-poetry:3.9", "run"]
+    env:
+      - "CI=true"
+  # - name: gcr.io/cloud-builders/gsutil
+  #   waitFor:
+  #     - Run Web Tests
+  #     - Build Web Assets
+  #   dir: web
+  #   args: [
+  #       "-m", # multi-thread
+  #       "rsync",
+  #       "-r", # recursive
+  #       "-c", # compare checksums
+  #       "-d", # delete extra files
+  #       "./build", # from
+  #       "${_WEB_DEPLOY_BUCKET}", # to
+  #     ]
+
+options:
+  logging: CLOUD_LOGGING_ONLY
