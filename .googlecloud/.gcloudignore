@@ -6,6 +6,10 @@
 # Python pycache:
 
 **pycache**/
+.pytest_cache/
+test/
+poetry.lock
+pyproject.toml
 
 /setup.cfg
 
