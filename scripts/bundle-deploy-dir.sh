@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if ! type docker >/dev/null 2>&1; then
-    echo "Docker is not installed, aborting..."
+if ! type docker >/dev/null 2>&1 && ! type poetry >/dev/null 2>&1; then
+    echo "Docker nor poetry are installed, aborting..."
     exit 1
 fi
 root_dir=$(
@@ -33,7 +33,11 @@ mkdir -p deploy/web && cp -r web/build deploy/web
 
 # Copy the API code
 echo "Bundling the the API code..."
-docker run --volume $(pwd)/api:/api --workdir /api docker.io/acidrain/python-poetry:3.9 poetry export --without-hashes --output requirements.txt
+if type poetry >/dev/null 2>&1; then
+    (cd api && poetry export --without-hashes --output requirements.txt)
+else
+    docker run --volume $(pwd)/api:/api --workdir /api docker.io/acidrain/python-poetry:3.9 poetry export --without-hashes --output requirements.txt
+fi
 cp -r api/{api,requirements.txt} deploy/
 
 # Copy the deploy config
