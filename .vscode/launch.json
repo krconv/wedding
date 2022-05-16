@@ -12,6 +12,13 @@
       "cwd": "${workspaceFolder}/web"
     },
     {
+      "name": "Web: Debugger",
+      "cwd": "${workspaceFolder}/web",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000"
+    },
+    {
       "name": "API: Start",
       "type": "python",
       "request": "launch",
@@ -28,7 +35,7 @@
   "compounds": [
     {
       "name": "Full App: Start",
-      "configurations": ["Web: Start", "API: Start"],
+      "configurations": ["Web: Start", "API: Start", "Web: Debugger"],
       "stopAll": false,
       "presentation": {
         "order": 1,
