@@ -13,7 +13,7 @@ import { useMantineTheme } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   root: {
-    minHeight: "100vh",
+    height: "100vh",
     [`@supports (-webkit-touch-callout: none)`]: {
       minHeight: ["100vh", "fill-available"],
     },
@@ -28,10 +28,7 @@ export const Landing: React.FC = () => {
   return (
     <Group id="landing" className={classes.root} direction="column">
       <Header />
-      <BackgroundImage
-        className={classes.image}
-        src={TreeFarm}
-      ></BackgroundImage>
+      <BackgroundImage className={classes.image} src={TreeFarm} />
     </Group>
   );
 };

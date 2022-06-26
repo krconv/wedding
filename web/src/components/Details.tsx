@@ -15,13 +15,13 @@ const useStyles = createStyles(
   (theme, { isMobile }: { isMobile: boolean }) => ({
     root: {
       backgroundColor: theme.colors["midnight-blue"][5],
-      padding: 96,
+      padding: "96px 16px"
     },
     icon: {
       height: "64px",
       width: "64px",
       margin: "16px",
-      marginBottom: isMobile ? "0px" : undefined
+      marginBottom: isMobile ? "0px" : undefined,
     },
     description: {
       alignItems: "center",
