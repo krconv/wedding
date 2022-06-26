@@ -19,7 +19,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
-    if: success() && github.ref == 'refs/heads/master'
+    if: success() && github.ref == 'refs/heads/main'
     steps:
       - name: Check out code
         uses: actions/checkout@v3
