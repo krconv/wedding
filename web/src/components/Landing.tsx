@@ -55,20 +55,29 @@ const Header: React.FC = () => {
 const Nav: React.FC = () => {
   return (
     <Group spacing="xl">
-      <Link text="Schedule" />
-      <Link text="RSVP" />
-      <Link text="FAQs" />
+      <Link text="Schedule" elementId="schedule" />
+      {/* <Link text="RSVP" /> */}
+      {/* <Link text="FAQs" /> */}
     </Group>
   );
 };
 
-const Link: React.FC<{ text: string; elementId?: string }> = ({ text }) => {
+const Link: React.FC<{ text: string; elementId: string }> = ({
+  text,
+  elementId,
+}) => {
   return (
     <Text
       variant="link"
       component="a"
       size="lg"
       href="#"
+      onClick={(event: any) => {
+        event.preventDefault();
+        document
+          .getElementById(elementId)
+          ?.scrollIntoView({ behavior: "smooth" });
+      }}
       color="earth-green"
       weight={500}
     >

@@ -1,4 +1,7 @@
-import CalendarIcon from "./calendar.svg";
-import MapIcon from "./map.svg";
+import Calendar from "./calendar.svg";
+import Map from "./map.svg";
+import Friday from "./friday.svg";
+import Saturday from "./saturday.svg";
+import Sunday from "./sunday.svg";
 
-export { CalendarIcon, MapIcon };
+export { Calendar, Map, Friday, Saturday, Sunday };

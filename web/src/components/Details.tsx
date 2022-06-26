@@ -15,12 +15,13 @@ const useStyles = createStyles(
   (theme, { isMobile }: { isMobile: boolean }) => ({
     root: {
       backgroundColor: theme.colors["midnight-blue"][5],
-      padding: "96px 16px"
+      padding: "96px 16px",
     },
     icon: {
       height: "64px",
       width: "64px",
       margin: "16px",
+      color: theme.white,
       marginBottom: isMobile ? "0px" : undefined,
     },
     description: {
@@ -49,7 +50,11 @@ export const Details: React.FC<{}> = () => {
             position="center"
           >
             <Center>
-              <Image className={classes.icon} src={Icons.CalendarIcon} />
+              <Image
+                className={classes.icon}
+                src={Icons.Calendar}
+                sx={{ color: "red" }}
+              />
             </Center>
             <Group className={classes.description} direction="column">
               <Title order={2} align="center">
@@ -62,7 +67,7 @@ export const Details: React.FC<{}> = () => {
             align="center"
             position="center"
           >
-            <Image className={classes.icon} src={Icons.MapIcon} />
+            <Image className={classes.icon} src={Icons.Map} />
             <Group className={classes.description} direction="column">
               <Title order={2} align="center">
                 The Preserve at Chocorua
