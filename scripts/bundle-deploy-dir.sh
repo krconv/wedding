@@ -1,11 +1,11 @@
 #!/bin/sh
 
-if ! type docker >/dev/null 2>&1 && ! type poetry >/dev/null 2>&1; then
-    echo "Docker nor poetry are installed, aborting..."
+if ! type poetry >/dev/null 2>&1; then
+    echo "Poetry is not installed, aborting..."
     exit 1
 fi
 cd "$(dirname $(dirname $(readlink -f "$0")))" # cd to root directory
-ls
+
 if [ -d deploy ]; then
     echo "Cleaning the deploy directory..."
     rm -rf deploy/*
@@ -24,18 +24,15 @@ if [ ! -d web/build ]; then
     echo "Building the web assets..."
     yarn --cwd web build
 fi
+
 echo "Bundling the the web assets..."
 mkdir -p deploy/web && cp -r web/build deploy/web
 
 # Copy the API code
 echo "Bundling the the API code..."
-if type poetry >/dev/null 2>&1; then
-    (cd api && poetry export --without-hashes --output requirements.txt)
-else
-    docker run --volume $(pwd)/api:/api --workdir /api --rm docker.io/acidrain/python-poetry:3.10 poetry export --without-hashes --output requirements.txt
-fi
-cp -r api deploy/
-cp api/requirements.txt deploy/
+cd api && poetry export --without-hashes --output requirements.txt && cd $OLDPWD
+
+cp -r api/* deploy/
 
 # Copy the deploy config
 echo "Bundling the the deploy config..."
