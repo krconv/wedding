@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Logo } from "../assets";
-import { TreeFarm } from "../assets";
+import { Cover } from "../assets";
 import { useMantineTheme } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
@@ -28,14 +28,14 @@ export const Landing: React.FC = () => {
   return (
     <Group id="landing" className={classes.root} direction="column">
       <Header />
-      <BackgroundImage className={classes.image} src={TreeFarm} />
+      <BackgroundImage className={classes.image} src={Cover} />
     </Group>
   );
 };
 
 const Header: React.FC = () => {
   const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md}px)`);
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
   return (
     <header style={{ width: "100%" }}>
       <Container size="md">
@@ -44,7 +44,12 @@ const Header: React.FC = () => {
           align={isMobile ? "center" : "flex-end"}
           direction={isMobile ? "column" : "row"}
         >
-          <Image src={Logo} width={isMobile ? 150 : 200} mt="sm" />
+          <Group direction="column" align="center">
+            <Image src={Logo} width={isMobile ? 150 : 200} mt="sm" />
+            <Text mt="-16px" align="center" style={{ fontSize: "12px" }}>
+              7.1.23
+            </Text>
+          </Group>
           <Nav />
         </Group>
       </Container>
@@ -79,7 +84,7 @@ const Link: React.FC<{ text: string; elementId: string }> = ({
           ?.scrollIntoView({ behavior: "smooth" });
       }}
       color="earth-green"
-      weight={500}
+      weight={300}
     >
       {text}
     </Text>

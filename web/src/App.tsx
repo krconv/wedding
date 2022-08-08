@@ -4,6 +4,7 @@ import { Landing } from "./components/Landing";
 import { Details } from "./components/Details";
 import { Schedule } from "./components/Schedule";
 import { Footer } from "./components/Footer";
+import { CountDown } from "./components/CountDown";
 
 export const App: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ export const App: React.FC = () => {
       <Landing />
       <Details />
       <Schedule />
+      <CountDown />
       <Footer />
     </AppShell>
   );

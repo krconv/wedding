@@ -1,84 +1,63 @@
 import {
   Box,
-  Center,
   Container,
   createStyles,
+  Grid,
   Group,
   Image,
-  Title,
+  Text,
   useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Icons } from "../assets";
+import { Thumbnail1, Thumbnail2, Thumbnail3 } from "../assets";
 
 const useStyles = createStyles(
   (theme, { isMobile }: { isMobile: boolean }) => ({
-    root: {
-      backgroundColor: theme.colors["midnight-blue"][5],
-      padding: "96px 16px",
-    },
-    icon: {
-      height: "64px",
-      width: "64px",
-      margin: "16px",
-      color: theme.white,
-      marginBottom: isMobile ? "0px" : undefined,
-    },
-    description: {
-      alignItems: "center",
-      justifyContent: "center",
-      flexGrow: 1,
-      "& h2,h3": {
-        color: theme.white,
-      },
-    },
+    root: {},
   })
 );
 
 export const Details: React.FC<{}> = () => {
   const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md}px)`);
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
   const { classes } = useStyles({ isMobile });
 
   return (
-    <Box className={classes.root}>
-      <Container size="sm">
-        <Group direction="column" position="center" spacing="xl" grow>
-          <Group
-            direction={isMobile ? "column" : "row"}
-            align="center"
-            position="center"
-          >
-            <Center>
-              <Image
-                className={classes.icon}
-                src={Icons.Calendar}
-                sx={{ color: "red" }}
-              />
-            </Center>
-            <Group className={classes.description} direction="column">
-              <Title order={2} align="center">
-                July 1st, 2023
-              </Title>
-            </Group>
+    <>
+      <Box className={classes.root} py={64}>
+        <Container size="sm">
+          <Group direction="column" position="center" spacing="xl" grow>
+            <Text
+              align="center"
+              style={{
+                fontFamily: '"Ms Madi", cursive',
+                fontSize: isMobile ? "48px" : "72px",
+              }}
+            >
+              Maddy & Kodey
+            </Text>
+            <Text
+              align="center"
+              style={{ fontSize: isMobile ? "18px" : "24px" }}
+            >
+              July 1st, 2023 • Tamworth, NH
+            </Text>
           </Group>
-          <Group
-            direction={isMobile ? "column" : "row"}
-            align="center"
-            position="center"
-          >
-            <Image className={classes.icon} src={Icons.Map} />
-            <Group className={classes.description} direction="column">
-              <Title order={2} align="center">
-                The Preserve at Chocorua
-              </Title>
-              <Title order={3} align="center">
-                Tamworth, NH
-              </Title>
-            </Group>
-          </Group>
-        </Group>
+        </Container>
+      </Box>
+      <Container size="md">
+        <Grid>
+          <Grid.Col xs={4}>
+            <Image src={Thumbnail1} />
+          </Grid.Col>
+          <Grid.Col span={6} xs={4}>
+            <Image src={Thumbnail2} />
+          </Grid.Col>
+          <Grid.Col span={6} xs={4}>
+            <Image src={Thumbnail3} />
+          </Grid.Col>
+        </Grid>
       </Container>
-    </Box>
+    </>
   );
 };

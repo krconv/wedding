@@ -12,7 +12,7 @@ export const theme: MantineThemeOverride = {
       h2: { fontSize: 30 },
       h3: { fontSize: 24 },
     },
-    fontWeight: 700,
+    fontWeight: 200,
   },
   fontSizes: {
     xs: 12,
