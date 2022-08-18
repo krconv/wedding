@@ -9,7 +9,7 @@ export const Footer: React.FC<{}> = () => {
         backgroundColor: theme.colors["earth-green"][4],
         padding: "64px 16px 16px",
         width: "100%",
-        margin: "0px 0px -32px"
+        margin: "0px 0px -32px",
       })}
       align="center"
       position="center"
@@ -20,7 +20,7 @@ export const Footer: React.FC<{}> = () => {
         size="sm"
         sx={(theme) => ({ color: theme.colors["earth-green"][7] })}
       >
-        Planned by Madelyn, engineered by Kodey.
+        Engineered by Kodey, supervised by Maddy.
       </Text>
     </Group>
   );

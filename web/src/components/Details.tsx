@@ -45,7 +45,7 @@ export const Details: React.FC<{}> = () => {
           </Group>
         </Container>
       </Box>
-      <Container size="md">
+      <Container size="md" pb={32}>
         <Grid>
           <Grid.Col xs={4}>
             <Image src={Thumbnail1} />
