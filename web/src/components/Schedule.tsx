@@ -9,7 +9,6 @@ import {
   Title,
 } from "@mantine/core";
 import React from "react";
-import { Tartaglia } from "../assets";
 
 const useStyles = createStyles((theme) => ({
   label: {

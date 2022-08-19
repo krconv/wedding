@@ -24,7 +24,6 @@ const isLocalhost = Boolean(
 const isAvailable = "serviceWorker" in navigator;
 const workerUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 const workbox = isAvailable ? new Workbox(workerUrl) : null;
-let hasUpdate = false;
 
 export const init = () => {
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
@@ -103,7 +102,7 @@ const registerServiceWorker = () => {
                 navigator.serviceWorker.controller;
               if (serviceWorkerAlreadyExists) {
                 console.log("A new update is available.");
-                hasUpdate = true;
+                updateAndReload();
               } else {
                 // first install, worker should activate automatically
                 console.log("Content is cached for offline use.");
@@ -128,10 +127,6 @@ const registerServiceWorker = () => {
     .catch((error) => {
       console.error("Error during service worker registration:", error);
     });
-};
-
-export const isUpdateAvailable = () => {
-  return hasUpdate;
 };
 
 export const updateAndReload = () => {
