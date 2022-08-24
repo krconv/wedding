@@ -2,6 +2,12 @@ import amplitude from "amplitude-js";
 import { MutableRefObject, useEffect, useState } from "react";
 import { useDebounced } from ".";
 
+const hubSpotEventNames = {
+  "viewed section": "pe6389590_viewed_section",
+  "clicked navigation link": "pe6389590_clicked_navigation_link",
+  "changed schedule tab": "pe6389590_changed_schedule_tab",
+};
+
 export const init = () => {
   // hubspot is initialized from the HTML include
 
@@ -19,18 +25,19 @@ export const identify = (details: { id: string; email: string }) => {
 };
 
 export const track = (
-  event: "viewed section" | string,
+  event: keyof typeof hubSpotEventNames,
   properties: { [key: "section" | string]: string | number | undefined } = {}
 ) => {
   console.debug("Tracked Event", { event, properties });
-  console.debug(properties);
-  hubSpotAnalytics().push([
-    "trackCustomBehavioralEvent",
-    {
-      name: event.replaceAll(" ", "_"),
-      properties,
-    },
-  ]);
+  if (hubSpotEventNames[event]) {
+    hubSpotAnalytics().push([
+      "trackCustomBehavioralEvent",
+      {
+        name: hubSpotEventNames[event],
+        properties,
+      },
+    ]);
+  }
   amplitude.getInstance().logEvent(event, properties);
 };
 
