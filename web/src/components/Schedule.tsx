@@ -8,18 +8,22 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import React from "react";
+import React, { useRef } from "react";
+import { analytics } from "../utils";
 
 const useStyles = createStyles((theme) => ({
   label: {
     fontSize: "18px",
   },
 }));
+
 export const Schedule: React.FC<{}> = () => {
   const { classes } = useStyles();
+  const ref = useRef<HTMLDivElement>(null);
+  analytics.useTrackView("Schedule", ref);
 
   return (
-    <Box id="schedule" pt={32} pb={64}>
+    <Box id="schedule" ref={ref} pt={32} pb={64}>
       <Container size="md">
         <Group direction="column" position="center">
           <Title
@@ -36,6 +40,11 @@ export const Schedule: React.FC<{}> = () => {
             position="center"
             style={{ width: "610px", maxWidth: "100%", height: "550px" }}
             classNames={{ tabLabel: classes.label }}
+            onTabChange={(index) =>
+              analytics.track("changed schedule tab", {
+                tab: ["Thursday", "Friday", "Saturday", "Sunday"][index],
+              })
+            }
           >
             <Tabs.Tab label="Thursday" value="thursday">
               <Group direction="column" grow>

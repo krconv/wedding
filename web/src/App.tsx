@@ -5,6 +5,9 @@ import { Details } from "./components/Details";
 import { Schedule } from "./components/Schedule";
 import { Footer } from "./components/Footer";
 import { CountDown } from "./components/CountDown";
+import { analytics } from "./utils";
+
+analytics.init();
 
 export const App: React.FC = () => {
   return (

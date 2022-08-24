@@ -9,7 +9,9 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import { useRef } from "react";
 import { Thumbnail1, Thumbnail2, Thumbnail3 } from "../assets";
+import { analytics } from "../utils";
 
 const useStyles = createStyles(
   (theme, { isMobile }: { isMobile: boolean }) => ({
@@ -21,10 +23,12 @@ export const Details: React.FC<{}> = () => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
   const { classes } = useStyles({ isMobile });
+  const ref = useRef<HTMLDivElement>(null);
+  analytics.useTrackView("Details", ref);
 
   return (
     <>
-      <Box className={classes.root} py={64}>
+      <Box ref={ref} className={classes.root} py={64}>
         <Container size="sm">
           <Group direction="column" position="center" spacing="xl" grow>
             <Text

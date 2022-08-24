@@ -10,6 +10,8 @@ import { useMediaQuery } from "@mantine/hooks";
 import { Logo } from "../assets";
 import { Cover } from "../assets";
 import { useMantineTheme } from "@mantine/core";
+import { useRef } from "react";
+import { analytics } from "../utils";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -25,8 +27,11 @@ const useStyles = createStyles((theme) => ({
 
 export const Landing: React.FC = () => {
   const { classes } = useStyles();
+  const ref = useRef<HTMLDivElement>(null);
+  analytics.useTrackView("Landing", ref);
+
   return (
-    <Group id="landing" className={classes.root} direction="column">
+    <Group id="landing" ref={ref} className={classes.root} direction="column">
       <Header />
       <BackgroundImage className={classes.image} src={Cover} />
     </Group>
@@ -36,6 +41,7 @@ export const Landing: React.FC = () => {
 const Header: React.FC = () => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
+
   return (
     <header style={{ width: "100%" }}>
       <Container size="md">
@@ -79,6 +85,7 @@ const Link: React.FC<{ text: string; elementId: string }> = ({
       href="#"
       onClick={(event: any) => {
         event.preventDefault();
+        analytics.track("clicked navigation link", { link: text });
         document
           .getElementById(elementId)
           ?.scrollIntoView({ behavior: "smooth" });
