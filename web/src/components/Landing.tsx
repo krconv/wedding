@@ -66,6 +66,7 @@ const Header: React.FC = () => {
 const Nav: React.FC = () => {
   return (
     <Group spacing="xl">
+      <Link text="Updates" elementId="updates" />
       <Link text="Schedule" elementId="schedule" />
       {/* <Link text="RSVP" /> */}
       {/* <Link text="FAQs" /> */}

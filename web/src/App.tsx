@@ -6,6 +6,7 @@ import { Schedule } from "./components/Schedule";
 import { Footer } from "./components/Footer";
 import { CountDown } from "./components/CountDown";
 import { analytics } from "./utils";
+import { Updates } from "./components/Updates";
 
 analytics.init();
 
@@ -14,6 +15,7 @@ export const App: React.FC = () => {
     <AppShell padding={0}>
       <Landing />
       <Details />
+      <Updates />
       <Schedule />
       <CountDown />
       <Footer />
