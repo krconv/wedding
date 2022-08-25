@@ -1,6 +1,6 @@
 import amplitude from "amplitude-js";
 import { MutableRefObject, useEffect, useState } from "react";
-import { useDebounced } from ".";
+import { env, useDebounced } from ".";
 
 const hubSpotEventNames = {
   "viewed section": "pe6389590_viewed_section",
@@ -9,19 +9,27 @@ const hubSpotEventNames = {
 };
 
 export const init = () => {
-  // hubspot is initialized from the HTML include
+  if (env.isDeployed) {
+    const script = document.createElement("script");
+    script.src = "https://js.hs-scripts.com/6389590.js?businessUnitId=457760";
+    document.head.append(script);
 
-  amplitude.getInstance().init("b92e2c9c3eb57b264dbbd4cbaca07665");
+    amplitude.getInstance().init("b92e2c9c3eb57b264dbbd4cbaca07665");
+  } else {
+    console.log("Analytics disabled");
+  }
 };
 
 export const identify = (details: { id: string; email: string }) => {
   console.debug("Identified User", details);
-  hubSpotAnalytics().push(["identify", details]);
+  if (env.isDeployed) {
+    hubSpotAnalytics().push(["identify", details]);
 
-  const identify = new amplitude.Identify();
-  identify.set("id", details.id);
-  identify.set("email", details.email);
-  amplitude.identify(identify);
+    const identify = new amplitude.Identify();
+    identify.set("id", details.id);
+    identify.set("email", details.email);
+    amplitude.identify(identify);
+  }
 };
 
 export const track = (
@@ -29,7 +37,7 @@ export const track = (
   properties: { [key: "section" | string]: string | number | undefined } = {}
 ) => {
   console.debug("Tracked Event", { event, properties });
-  if (hubSpotEventNames[event]) {
+  if (env.isDeployed) {
     hubSpotAnalytics().push([
       "trackCustomBehavioralEvent",
       {
@@ -37,8 +45,8 @@ export const track = (
         properties,
       },
     ]);
+    amplitude.getInstance().logEvent(event, properties);
   }
-  amplitude.getInstance().logEvent(event, properties);
 };
 
 export const useTrackView = (

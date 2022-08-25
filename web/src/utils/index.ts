@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export * as worker from "./worker";
 export { theme } from "./theme";
 export * as analytics from "./analytics";
+export * as env from "./env";
 
 export function useDebounced<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
