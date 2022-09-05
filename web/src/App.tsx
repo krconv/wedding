@@ -7,6 +7,7 @@ import { Footer } from "./components/Footer";
 import { CountDown } from "./components/CountDown";
 import { analytics } from "./utils";
 import { Updates } from "./components/Updates";
+import { Registry } from "./components/Registry";
 
 analytics.init();
 
@@ -17,6 +18,7 @@ export const App: React.FC = () => {
       <Details />
       <Updates />
       <Schedule />
+      <Registry />
       <CountDown />
       <Footer />
     </AppShell>

@@ -24,17 +24,18 @@ export const Schedule: React.FC<{}> = () => {
 
   return (
     <Box id="schedule" ref={ref} pt={32} pb={64}>
-      <Container size="md">
+      <Container size="xs">
         <Group direction="column" position="center">
           <Title
             align="center"
             order={1}
+            mb="md"
             sx={(theme) => ({ color: theme.colors["earth-green"][6] })}
           >
             Schedule
           </Title>
 
-          <Tabs
+          {/* <Tabs
             orientation="horizontal"
             initialTab={2}
             position="center"
@@ -46,86 +47,96 @@ export const Schedule: React.FC<{}> = () => {
               })
             }
           >
-            <Tabs.Tab label="Thursday" value="thursday">
-              <Group direction="column" grow>
-                <AgendaItem title="Welcome Cocktails" startTime="5:00pm">
-                  Staying onsite or nearby? Come join us for a welcome
-                  gathering! Light refreshments will be provided, but feel free
-                  to bring a snack/drink to share.
-                </AgendaItem>
-                <AgendaItem
+            <Tabs.Tab label="Thursday" value="thursday"> */}
+          <Title order={2}>Thursday, June 29th</Title>
+          <Group direction="column" grow>
+            <AgendaItem title="Welcome Party" startTime="TBD" date="June 29th">
+              Staying onsite or nearby? Come join us for a welcome gathering!
+              {/* Light refreshments will be provided, but feel free to bring a
+              snack or drink to share. */}
+            </AgendaItem>
+            {/* <AgendaItem
                   title="Laser Tag & Go-Carts"
                   startTime="7:00pm"
                   endTime="8:30pm"
+                  date="June 29th"
                 >
                   Bring your competitive spirit to White Lake Speedway for laser
                   tag and Go-cart competitions!
-                </AgendaItem>
-              </Group>
-            </Tabs.Tab>
-            <Tabs.Tab label="Friday" value="friday">
-              <Group direction="column" grow>
-                <AgendaItem title="Fun & Chill" startTime="All day">
-                  Enjoy a fun filled day at The Preserve. Activities will
-                  include swimming, volleyball, corn hole and more.
-                </AgendaItem>
-                <AgendaItem
-                  title="Rehearsal Dinner"
-                  startTime="5:00pm"
-                  endTime="8:00pm"
-                >
-                  Gusto's food truck will be offering pizza, salads and more at
-                  The Preserve from 5-8pm. Stop by for a bite!
-                </AgendaItem>
-                <AgendaItem
-                  title="S'mores"
-                  startTime="8:00pm"
-                  endTime="10:00pm"
-                >
-                  Get toasty around a campfire and enjoy top-quality tips on the
-                  art of cooking s'mores.
-                </AgendaItem>
-              </Group>
-            </Tabs.Tab>
-            <Tabs.Tab label="Saturday" value="saturday">
-              <Group direction="column" grow>
-                <AgendaItem
+                </AgendaItem> */}
+          </Group>
+          {/* </Tabs.Tab>
+            <Tabs.Tab label="Friday" value="friday"> */}
+          <Title order={2} mt="sm">
+            Friday, June 30th
+          </Title>
+          <Group direction="column" grow>
+            <AgendaItem
+              title="Fun & Chill"
+              startTime="All day"
+              date="June 30th"
+            >
+              Enjoy a fun filled day at The Preserve or around Tamworth, NH with
+              swimming, volleyball, corn hole, hiking and more.
+            </AgendaItem>
+            <AgendaItem
+              title="Rehearsal Dinner"
+              startTime="TBD"
+              date="June 30th"
+            />
+            {/* Gusto's food truck will be offering pizza, salads and more. Stop
+              by for a bite!
+            </AgendaItem> */}
+          </Group>
+          {/* </Tabs.Tab>
+            <Tabs.Tab label="Saturday" value="saturday"> */}
+          <Title order={2} mt="sm">
+            Saturday, July 1st
+          </Title>
+          <Group direction="column" grow>
+            {/* <AgendaItem
                   title="Breakfast"
                   startTime="7:00am"
                   endTime="9:00am"
+                  date="July 1st"
                 >
                   Breakfast for the early birds.
-                </AgendaItem>
-                <AgendaItem
-                  title="Ceremony"
-                  startTime="5:00pm"
-                  endTime="5:30pm"
-                />
-                <AgendaItem
-                  title="Cocktail Hour"
-                  startTime="5:30pm"
-                  endTime="6:30pm"
-                />
-                <AgendaItem
-                  title="Reception"
-                  startTime="6:30pm"
-                  endTime="11:00pm"
-                />
-              </Group>
-            </Tabs.Tab>
-            <Tabs.Tab label="Sunday" value="sunday">
-              <Group direction="column" grow>
-                <AgendaItem
-                  title="Farewell Brunch"
-                  startTime="9:00am"
-                  endTime="11:00am"
-                >
-                  Join the new Mr and Mrs for brunch under the tent at The
-                  Preserve.
-                </AgendaItem>
-              </Group>
-            </Tabs.Tab>
-          </Tabs>
+                </AgendaItem> */}
+            <AgendaItem
+              title="Ceremony"
+              startTime="5:00pm"
+              endTime="5:30pm"
+              date="July 1st"
+            />
+            <AgendaItem
+              title="Cocktail Hour"
+              startTime="5:30pm"
+              endTime="6:30pm"
+              date="July 1st"
+            />
+            <AgendaItem
+              title="Reception"
+              startTime="6:30pm"
+              endTime="11:00pm"
+              date="July 1st"
+            />
+            <AgendaItem title="S'mores" date="June 30th">
+              Get toasty around a campfire and enjoy top-quality tips on the art
+              of cooking s'mores.
+            </AgendaItem>
+          </Group>
+          {/* </Tabs.Tab>
+            <Tabs.Tab label="Sunday" value="sunday"> */}
+          <Title order={2} mt="sm">
+            Sunday, July 2nd
+          </Title>
+          <Group direction="column" grow>
+            <AgendaItem title="Farewell Brunch" startTime="TBD" date="July 2nd">
+              Join the new Mr and Mrs for brunch under the tent at The Preserve.
+            </AgendaItem>
+          </Group>
+          {/* </Tabs.Tab>
+          </Tabs> */}
         </Group>
       </Container>
     </Box>
@@ -134,8 +145,9 @@ export const Schedule: React.FC<{}> = () => {
 
 const AgendaItem: React.FC<{
   title: string;
-  startTime: string;
+  startTime?: string;
   endTime?: string;
+  date: string;
   children?: string;
   imageUrl?: string;
 }> = ({ title, startTime, endTime, children, imageUrl }) => {
@@ -158,10 +170,12 @@ const AgendaItem: React.FC<{
         >
           {title}
         </Title>
-        <Text>
-          {startTime}
-          {endTime && " - " + endTime}
-        </Text>
+        {startTime && (
+          <Text>
+            {startTime}
+            {endTime && " - " + endTime}
+          </Text>
+        )}
         {children && <Text mt="sm">{children}</Text>}
       </Box>
       {imageUrl && <Image src={imageUrl} width={96} />}

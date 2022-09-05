@@ -68,7 +68,7 @@ const Nav: React.FC = () => {
     <Group spacing="xl">
       <Link text="Updates" elementId="updates" />
       <Link text="Schedule" elementId="schedule" />
-      {/* <Link text="RSVP" /> */}
+      <Link text="Registry" elementId="registry" />
       {/* <Link text="FAQs" /> */}
     </Group>
   );

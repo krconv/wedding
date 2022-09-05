@@ -17,9 +17,7 @@ export const CountDown: React.FC = () => {
   const { classes } = useStyles();
   const daysUntil = useMemo(
     () =>
-      Math.round(
-        Math.abs(new Date(2023, 6, 1).getTime() - Date.now()) / 8.64e7
-      ),
+      Math.ceil(Math.abs(new Date(2023, 6, 1).getTime() - Date.now()) / 8.64e7),
     []
   );
   return (

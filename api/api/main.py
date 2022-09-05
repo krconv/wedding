@@ -1,20 +1,13 @@
-from typing import Union
+import fastapi
 
-from fastapi import FastAPI
-
-app = FastAPI()
+from .services import registry
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app = fastapi.FastAPI(
+    title="coach",
+    openapi_url=f"/api/openapi.json",
+    generate_unique_id_function=lambda route: route.name,
+)
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
-
-
-@app.get("/api/health")
-def read_root():
-    return {"status": "healthy"}
+app.include_router(registry.endpoints.router, prefix="/api/registry", tags=["registry"])

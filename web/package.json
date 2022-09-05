@@ -13,6 +13,7 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "amplitude-js": "^8.19.0",
+    "axios": "^0.27.2",
     "dayjs": "^1.11.5",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -36,7 +37,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "openapi --input http://localhost:8080/api/openapi.json --output src/api --name ApiClient --client axios --useOptions --useUnionTypes && prettier src/api --write"
   },
   "proxy": "http://localhost:8080",
   "eslintConfig": {
@@ -58,6 +60,8 @@
     ]
   },
   "devDependencies": {
-    "@types/amplitude-js": "^8.16.2"
+    "@types/amplitude-js": "^8.16.2",
+    "openapi-typescript-codegen": "^0.23.0",
+    "prettier": "^2.7.1"
   }
 }

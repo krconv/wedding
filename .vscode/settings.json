@@ -2,5 +2,9 @@
   "editor.formatOnSave": true,
   "python.autoComplete.extraPaths": ["api"],
   "python.formatting.provider": "black",
-  "python.analysis.extraPaths": ["api"]
+  "python.analysis.extraPaths": ["api"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.testing.cwd": "${workspaceFolder}/api",
+  "python.testing.pytestArgs": ["api", "--verbose"]
 }
