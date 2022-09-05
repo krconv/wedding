@@ -1,24 +1,8 @@
-import {
-  Box,
-  Container,
-  createStyles,
-  Group,
-  Image,
-  Tabs,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Container, Group, Image, Text, Title } from "@mantine/core";
 import React, { useRef } from "react";
 import { analytics } from "../utils";
 
-const useStyles = createStyles((theme) => ({
-  label: {
-    fontSize: "18px",
-  },
-}));
-
 export const Schedule: React.FC<{}> = () => {
-  const { classes } = useStyles();
   const ref = useRef<HTMLDivElement>(null);
   analytics.useTrackView("Schedule", ref);
 

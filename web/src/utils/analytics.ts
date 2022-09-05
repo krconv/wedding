@@ -5,6 +5,7 @@ import { env, useDebounced } from ".";
 const hubSpotEventNames = {
   "viewed section": "pe6389590_viewed_section",
   "clicked navigation link": "pe6389590_clicked_navigation_link",
+  "clicked github link": "pe6389590_clicked_github_link",
   "changed schedule tab": "pe6389590_changed_schedule_tab",
 };
 
