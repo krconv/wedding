@@ -1,11 +1,11 @@
 import fastapi
 
-from . import parser, schemas
+from . import schemas, zola
 
 router = fastapi.APIRouter()
 
 
 @router.get("/", response_model=schemas.Registry, name="get_registry")
 async def get_registry() -> schemas.Registry:
-    zola = parser.ZolaParser()
-    return await zola.fetch_and_parse_registry()
+    zola_ = zola.ZolaClient()
+    return await zola_.fetch_registry()

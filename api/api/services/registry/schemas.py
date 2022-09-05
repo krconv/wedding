@@ -5,7 +5,7 @@ import pydantic
 class RegistryItem(pydantic.BaseModel):
     id: str
     title: str
-    brand: str
+    brand: str | None
     price: decimal.Decimal | None
     image_link: str
 
