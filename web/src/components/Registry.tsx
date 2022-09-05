@@ -65,6 +65,7 @@ export const Registry: React.FC<{}> = () => {
               component="a"
               href="https://www.zola.com/registry/maddyandkodey"
               target="_blank"
+              onClick={() => analytics.track("opened zola registry")}
               styles={(theme) => ({
                 root: {
                   flexGrow: "0 !important" as any,
@@ -126,6 +127,9 @@ const Item: React.FC<{ item: RegistryItem }> = ({ item }) => {
             component="a"
             href={item.buy_link}
             target="_blank"
+            onClick={() =>
+              analytics.track("opened registry item", { item: item.title })
+            }
             styles={(theme) => ({
               root: {
                 flexGrow: "0 !important" as any,

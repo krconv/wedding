@@ -7,6 +7,8 @@ const hubSpotEventNames = {
   "clicked navigation link": "pe6389590_clicked_navigation_link",
   "clicked github link": "pe6389590_clicked_github_link",
   "changed schedule tab": "pe6389590_changed_schedule_tab",
+  "opened registry item": "pe6389590_opened_registry_item",
+  "opened zola registry": "pe6389590_opened_zola_registry",
 };
 
 export const init = () => {
