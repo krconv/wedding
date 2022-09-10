@@ -36,6 +36,8 @@ class ZolaClient:
             id=data["object_id"],
             title=data["name"],
             brand=data["brand"]["name"] if "brand" in data else None,
-            price=decimal.Decimal(data["price"]),
+            price=decimal.Decimal(data["price"])
+            if not data["contributions"]["hide_contributions"]
+            else None,
             image_link=data["images"][0]["medium"],
         )
