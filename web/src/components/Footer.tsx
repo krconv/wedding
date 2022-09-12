@@ -8,21 +8,30 @@ export const Footer: React.FC<{}> = () => {
       direction="column"
       sx={(theme) => ({
         backgroundColor: theme.colors["earth-green"][4],
-        padding: "64px 16px 16px",
+        padding: "48px 16px",
         width: "100%",
-        margin: "0px 0px -32px",
       })}
       align="center"
       position="center"
     >
       <Image src={LogoSimple} width={150} />
       <Text
-        mt="24px"
         size="sm"
-        mb="sm"
+        mb="xl"
+        align="center"
         sx={(theme) => ({ color: theme.colors["earth-green"][7] })}
       >
-        Engineered by Kodey, supervised by Maddy.
+        Engineered by Kodey, supervised by Maddy. Photography by{" "}
+        <Text
+          inherit
+          variant="link"
+          component="a"
+          href="https://kelseyconverse.com"
+          target="_blank"
+        >
+          Kelsey Converse
+        </Text>
+        .
       </Text>
       <a
         href="https://github.com/krconv/wedding"

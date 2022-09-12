@@ -67,8 +67,8 @@ export const useTrackView = (
           setInView(entries.filter((entry) => entry.isIntersecting).length > 0);
         },
         {
-          rootMargin: "0px 0px 20% 0px",
-          threshold: 0.9,
+          rootMargin: "0px 0px -20% 0px",
+          threshold: 0.2,
         }
       );
       observer.observe(element);
