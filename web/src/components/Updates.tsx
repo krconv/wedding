@@ -30,7 +30,7 @@ export const Updates: React.FC<{}> = () => {
 
   const postedAt = useMemo(() => {
     dayjs.extend(Calendar);
-    return dayjs("2022-08-24").calendar(null, {
+    return dayjs("2023-01-10").calendar(null, {
       sameDay: "[Today]",
       nextDay: "[Tomorrow]",
       lastDay: "[Yesterday]",
