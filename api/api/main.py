@@ -1,7 +1,7 @@
+import asyncio
 import fastapi
 
-from .services import registry
-
+from . import config, registry, rsvp
 
 app = fastapi.FastAPI(
     title="coach",
@@ -10,4 +10,24 @@ app = fastapi.FastAPI(
 )
 
 
-app.include_router(registry.endpoints.router, prefix="/api/registry", tags=["registry"])
+@app.on_event("startup")
+async def startup():
+    config.init()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    clients = [
+        registry.deps.zola_client,
+        rsvp.deps.hubspot_client,
+    ]
+
+    async def close_client_if_needed(client):
+        if client:
+            await client.close()
+
+    await asyncio.gather(*[close_client_if_needed(client) for client in clients])
+
+
+app.include_router(registry.routes.router)
+app.include_router(rsvp.routes.router)

@@ -1,25 +1,28 @@
+import typing
+import fastapi
 import decimal
+import httpx
+
 from . import schemas
-import aiohttp
 
 
 class ZolaClient:
+    def __init__(self, client: httpx.AsyncClient | None = None):
+        self._client = client or httpx.AsyncClient()
+
     async def fetch_registry(self) -> schemas.Registry:
         data = await self._fetch_registry_data()
 
         return self._map_registry_data(data)
 
-    async def _fetch_registry_data(self) -> dict:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "https://www.zola.com/web-registry-api/v1/registryCollection/search",
-                json={"registry_key": "maddyandkodey", "flattened_view": True},
-            ) as response:
-                if not response.ok:
-                    raise Exception(
-                        "Error while fetching from Zola: " + await response.text()
-                    )
-                return await response.json()
+    async def _fetch_registry_data(self) -> dict[str, typing.Any]:
+        response = await self._client.post(
+            "https://www.zola.com/web-registry-api/v1/registryCollection/search",
+            json={"registry_key": "maddyandkodey", "flattened_view": True},
+        )
+        if response.status_code != fastapi.status.HTTP_200_OK:
+            raise Exception("Error while fetching from Zola: " + await response.text())
+        return response.json()
 
     def _map_registry_data(self, data: dict) -> schemas.Registry:
         return schemas.Registry(
@@ -41,3 +44,6 @@ class ZolaClient:
             else None,
             image_link=data["images"][0]["medium"],
         )
+
+    async def close(self):
+        await self._client.aclose()

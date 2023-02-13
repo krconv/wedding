@@ -2,6 +2,9 @@ runtime: python310
 
 entrypoint: gunicorn --bind :$PORT --worker-class uvicorn.workers.UvicornWorker api.main:app
 
+env_variables:
+  ENV: "prod"
+
 # these paths rely on the bundle-deploy-dir.sh script
 handlers:
   # serve the api

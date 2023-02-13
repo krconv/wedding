@@ -12,7 +12,7 @@ class RegistryItem(pydantic.BaseModel):
     buy_link: str = ""
 
     @pydantic.root_validator()
-    def compute_area(cls, values) -> dict:
+    def compute_link(cls, values) -> dict:
         return {
             **values,
             "buy_link": f"https://www.zola.com/registry/collection-item/{values['id']}",

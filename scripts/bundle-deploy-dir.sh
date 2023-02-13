@@ -33,6 +33,7 @@ echo "Bundling the the API code..."
 cd api && poetry export --without-hashes --output requirements.txt && cd $OLDPWD
 
 cp -r api/* deploy/
+rm -r api/requirements.txt
 
 # Copy the deploy config
 echo "Bundling the the deploy config..."

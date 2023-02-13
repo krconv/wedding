@@ -14,7 +14,9 @@ mypy = "^0.950"
 python = "^3.10"
 uvicorn = {extras = ["standard"], version = "^0.17.6"}
 pydantic = "^1.10.1"
-aiohttp = "^3.8.1"
+google-auth = "^2.16.0"
+httpx = "^0.23.3"
+requests = "^2.28.2"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
