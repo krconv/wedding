@@ -30,7 +30,7 @@ export const Updates: React.FC<{}> = () => {
 
   const postedAt = useMemo(() => {
     dayjs.extend(Calendar);
-    return dayjs("2023-01-10").calendar(null, {
+    return dayjs("2023-02-13").calendar(null, {
       sameDay: "[Today]",
       nextDay: "[Tomorrow]",
       lastDay: "[Yesterday]",
@@ -46,11 +46,8 @@ export const Updates: React.FC<{}> = () => {
           <Group direction="column" position="center" grow>
             <Title order={3} align="center"></Title>
             <Text align="center" size="lg">
-              <Text component="span" inherit style={{ fontWeight: 500 }}>
-                Welcome to our website!
-              </Text>{" "}
-              We'll continue to add information about our big day, including
-              more details about the venue and things to do.
+              We're working on invitations and lodging information now, and will
+              send them out as soon they are ready!
             </Text>
             <Text align="center" size="sm" style={{ fontStyle: "italic" }}>
               {" "}
