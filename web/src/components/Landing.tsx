@@ -69,6 +69,7 @@ const Nav: React.FC = () => {
       <Link text="Updates" elementId="updates" />
       <Link text="Schedule" elementId="schedule" />
       <Link text="Registry" elementId="registry" />
+      {/* <Link text="RSVP" elementId="rsvp" /> */}
       {/* <Link text="FAQs" /> */}
     </Group>
   );

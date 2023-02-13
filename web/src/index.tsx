@@ -4,6 +4,8 @@ import "./index.css";
 import { App } from "./App";
 import { theme, worker } from "./utils";
 import { MantineProvider } from "@mantine/core";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "./store";
 
 worker.init();
 
@@ -13,7 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
-      <App />
+      <ReduxProvider store={store}>
+        <App />
+      </ReduxProvider>
     </MantineProvider>
   </React.StrictMode>
 );

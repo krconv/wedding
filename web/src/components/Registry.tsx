@@ -11,19 +11,15 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ApiClient, Registry as Registry_, RegistryItem } from "../api";
+import React, { useRef } from "react";
+import { RegistryItem } from "../api";
+import { useGetRegistryQuery } from "../store/api";
 import { analytics } from "../utils";
 
 export const Registry: React.FC<{}> = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const [registry, setRegistry] = useState<Registry_ | null>(null);
-  const api = useMemo(() => new ApiClient(), []);
+  const registry = useGetRegistryQuery({}, { pollingInterval: 1000 * 60 * 5 });
   analytics.useTrackView("Registry", ref);
-
-  useEffect(() => {
-    api.registry.getRegistry().then(setRegistry);
-  }, [api]);
 
   return (
     <Box id="registry" ref={ref} pt={32} pb={64}>
@@ -38,7 +34,7 @@ export const Registry: React.FC<{}> = () => {
             Registry
           </Title>
 
-          {!registry ? (
+          {registry.isLoading || !registry.data ? (
             <Loader variant="dots" style={{ minHeight: "100px" }} />
           ) : (
             <SimpleGrid
@@ -50,7 +46,7 @@ export const Registry: React.FC<{}> = () => {
                 { maxWidth: 300, cols: 1, spacing: "sm" },
               ]}
             >
-              {registry?.items.slice(0, 8).map((item) => (
+              {registry.data?.items.slice(0, 8).map((item) => (
                 <Item key={item.id} item={item} />
               ))}
             </SimpleGrid>
