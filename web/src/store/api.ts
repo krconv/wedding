@@ -2,14 +2,18 @@ import { BaseQueryApi, createApi } from "@reduxjs/toolkit/query/react";
 import dayjs from "dayjs";
 import {
   ApiClient,
-  Registry,
+  ApiError,
   CancelablePromise,
   CancelError,
-  GuestGroupSearchResult,
-  GuestGroup,
-  GuestGroupUpdate,
   Event,
+  Faq,
+  GuestGroup,
+  GuestGroupSearchResult,
+  GuestGroupUpdate,
+  Registry,
+  UpdateMessage,
 } from "../api";
+import { sentry } from "../utils";
 
 const LIST = "LIST";
 
@@ -77,6 +81,22 @@ export const api = createApi({
         method: ({ schedule }) => schedule.getSchedule(),
       }),
     }),
+
+    /**
+     * FAQ Endpoints
+     */
+    getFaqs: builder.query<Faq[], {}>({
+      query: () => ({
+        method: ({ faq }) => faq.getFaqs(),
+      }),
+    }),
+
+    getUpdateMessage: builder.query<UpdateMessage | null, {}>({
+      query: () => ({
+        method: ({ faq }) => faq.getUpdateMessage(),
+        expectedStatusCodes: [200, 404],
+      }),
+    }),
   }),
 });
 
@@ -88,10 +108,10 @@ const apiInstance = new ApiClient();
 async function baseQuery<Result>(
   args: {
     method: (api: ApiClient) => CancelablePromise<Result | any>;
-    notificationIfErrored?: string | boolean;
+    expectedStatusCodes?: number[];
   },
   { signal }: BaseQueryApi
-): Promise<{ data: Result } | { error: { status: number; data: any } }> {
+): Promise<{ data: Result } | { error: { status?: number; data: any } }> {
   try {
     if (signal.aborted) {
       throw new CancelError("Request was aborted");
@@ -104,12 +124,29 @@ async function baseQuery<Result>(
       data: result,
     };
   } catch (err: any) {
-    return {
-      error: {
-        status: err?.status || 500,
-        data: err?.data,
-      },
-    };
+    if (err instanceof ApiError) {
+      if (!args.expectedStatusCodes?.includes(err.status)) {
+        sentry.capture(
+          new Error(`Unexpected API error: ${err.status} (${err.statusText})`, {
+            cause: err,
+          }),
+          (scope) => scope.setExtras(err)
+        );
+      }
+      return {
+        error: {
+          status: err.status,
+          data: err.body,
+        },
+      };
+    } else {
+      sentry.capture(err);
+      return {
+        error: {
+          data: String(err),
+        },
+      };
+    }
   }
 }
 
@@ -120,4 +157,6 @@ export const {
   useGetGuestGroupQuery,
   useUpdateGuestGroupMutation,
   useGetScheduleQuery,
+  useGetFaqsQuery,
+  useGetUpdateMessageQuery,
 } = api;

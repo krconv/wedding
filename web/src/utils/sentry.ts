@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
+import { CaptureContext } from "@sentry/types";
 import { env } from ".";
 
 export const init = () => {
@@ -24,4 +25,9 @@ export const identify = ({
   lastName?: string;
 }) => {
   Sentry.setUser({ id, firstName, lastName });
+};
+
+export const capture = (err: Error, context?: CaptureContext) => {
+  console.debug("Captured Sentry error:", err);
+  Sentry.captureException(err, context);
 };

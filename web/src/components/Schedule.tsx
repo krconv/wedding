@@ -2,17 +2,19 @@ import {
   Box,
   Container,
   Group,
-  Loader,
+  Skeleton,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
+import dayjs from "dayjs";
+import { range } from "lodash";
+import groupBy from "lodash/groupBy";
 import React, { useMemo, useRef } from "react";
+import { Event } from "../api";
 import { useGetScheduleQuery } from "../store/api";
 import { analytics } from "../utils";
-import groupBy from "lodash/groupBy";
-import dayjs from "dayjs";
-import { Event } from "../api";
+import { Divider } from "./Divider";
 
 export const Schedule: React.FC<{}> = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -39,37 +41,47 @@ export const Schedule: React.FC<{}> = () => {
   }, [events]);
 
   return (
-    <Box id="schedule" ref={ref} pt={32} pb={64}>
-      <Container size="xs">
-        <Stack>
-          <Title
-            align="center"
-            order={1}
-            mb="md"
-            sx={(theme) => ({ color: theme.colors["earth-green"][6] })}
-          >
-            Schedule
-          </Title>
+    <>
+      <Box id="schedule" ref={ref} pt={32} pb={64}>
+        <Container size="xs">
+          <Stack>
+            <Title
+              align="center"
+              order={1}
+              mb="md"
+              sx={(theme) => ({ color: theme.colors["earth-green"][6] })}
+            >
+              Schedule
+            </Title>
 
-          {events.isLoading || !events.data ? (
-            <Loader variant="dots" style={{ minHeight: "100px" }} />
-          ) : (
-            eventsByDay.map(([date, events]) => (
-              <React.Fragment key={date}>
-                <Title order={2} mt="sm" key={date} align="center">
-                  {dayjs(date).format("dddd, MMMM Do")}
-                </Title>
-                <Stack>
-                  {events.map((event) => (
-                    <AgendaItem key={event.id} event={event} />
-                  ))}
-                </Stack>
-              </React.Fragment>
-            ))
-          )}
-        </Stack>
-      </Container>
-    </Box>
+            {!events.isSuccess
+              ? range(0, 4).map((day) => (
+                  <React.Fragment key={day}>
+                    <Skeleton height="42px" visible mt="sm" />
+                    <Stack>
+                      {range(0, 2).map((event) => (
+                        <Skeleton key={event} height="100px" visible />
+                      ))}
+                    </Stack>
+                  </React.Fragment>
+                ))
+              : eventsByDay.map(([date, events]) => (
+                  <React.Fragment key={date}>
+                    <Title order={2} mt="sm" key={date} align="center">
+                      {dayjs(date).format("dddd, MMMM Do")}
+                    </Title>
+                    <Stack>
+                      {events.map((event) => (
+                        <AgendaItem key={event.id} event={event} />
+                      ))}
+                    </Stack>
+                  </React.Fragment>
+                ))}
+          </Stack>
+        </Container>
+      </Box>
+      <Divider />
+    </>
   );
 };
 

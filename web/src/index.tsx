@@ -8,11 +8,13 @@ import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./store";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
+import calendar from "dayjs/plugin/calendar";
 import { Profiler } from "@sentry/react";
 
 sentry.init();
 worker.init();
 
+dayjs.extend(calendar);
 dayjs.extend(advancedFormat);
 
 const root = ReactDOM.createRoot(

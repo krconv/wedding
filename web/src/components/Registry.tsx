@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   Button,
   Card,
@@ -6,12 +7,13 @@ import {
   Container,
   Group,
   Image,
-  Loader,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
+import { range } from "lodash";
 import React, { useRef } from "react";
 import { RegistryItem } from "../api";
 import { useGetRegistryQuery } from "../store/api";
@@ -35,23 +37,29 @@ export const Registry: React.FC<{}> = () => {
             Registry
           </Title>
 
-          {registry.isLoading || !registry.data ? (
-            <Loader variant="dots" style={{ minHeight: "100px" }} />
-          ) : (
-            <SimpleGrid
-              cols={4}
-              spacing="lg"
-              breakpoints={[
-                { maxWidth: 750, cols: 3, spacing: "md" },
-                { maxWidth: 555, cols: 2, spacing: "sm" },
-                { maxWidth: 300, cols: 1, spacing: "sm" },
-              ]}
-            >
-              {registry.data?.items.slice(0, 8).map((item) => (
-                <Item key={item.id} item={item} />
-              ))}
-            </SimpleGrid>
-          )}
+          <SimpleGrid
+            cols={4}
+            spacing="lg"
+            breakpoints={[
+              { maxWidth: 750, cols: 3, spacing: "md" },
+              { maxWidth: 555, cols: 2, spacing: "sm" },
+              { maxWidth: 300, cols: 1, spacing: "sm" },
+            ]}
+          >
+            {registry.data == null
+              ? range(0, 8).map((index) => (
+                  <AspectRatio
+                    key={index}
+                    ratio={215 / 360}
+                    sx={{ width: "215px" }}
+                  >
+                    <Skeleton height="100%" width="100%" radius={0} visible />
+                  </AspectRatio>
+                ))
+              : registry.data?.items
+                  .slice(0, 8)
+                  .map((item) => <Item key={item.id} item={item} />)}
+          </SimpleGrid>
 
           <Center>
             <Button
@@ -87,8 +95,8 @@ const Item: React.FC<{ item: RegistryItem }> = ({ item }) => {
       >
         <Image src={item.image_link} alt={item.title} />
 
-        <Stack spacing={0} p="sm" sx={{flexGrow: 1}}>
-          <Box sx={{flexGrow: 1}}>
+        <Stack spacing={0} p="sm" sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1 }}>
             <Title order={4}>{item.title.split(",")[0]}</Title>
             <Group spacing="xs" align="baseline" position="apart" noWrap>
               <Text weight={400}>{item.brand}</Text>

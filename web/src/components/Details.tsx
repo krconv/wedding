@@ -1,7 +1,6 @@
 import {
   Box,
   Container,
-  createStyles,
   Grid,
   Image,
   Stack,
@@ -13,22 +12,15 @@ import { useRef } from "react";
 import { Thumbnail1, Thumbnail2, Thumbnail3 } from "../assets";
 import { analytics } from "../utils";
 
-const useStyles = createStyles(
-  (theme, { isMobile }: { isMobile: boolean }) => ({
-    root: {},
-  })
-);
-
 export const Details: React.FC<{}> = () => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
-  const { classes } = useStyles({ isMobile });
   const ref = useRef<HTMLDivElement>(null);
   analytics.useTrackView("Details", ref);
 
   return (
     <>
-      <Box ref={ref} className={classes.root} py={64}>
+      <Box ref={ref} py={64}>
         <Container size="sm">
           <Stack spacing="xl">
             <Text
@@ -42,7 +34,10 @@ export const Details: React.FC<{}> = () => {
             </Text>
             <Text
               align="center"
-              style={{ fontSize: isMobile ? "18px" : "24px" }}
+              sx={(theme) => ({
+                fontSize: isMobile ? "18px" : "24px",
+                fontFamily: theme.headings.fontFamily,
+              })}
             >
               July 1st, 2023 • Tamworth, NH
             </Text>

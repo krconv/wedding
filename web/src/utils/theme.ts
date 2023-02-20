@@ -4,7 +4,7 @@ export const theme: MantineThemeOverride = {
   colorScheme: "light",
   primaryColor: "earth-green",
   defaultRadius: 8,
-  fontFamily: "'Raleway', sans-serif",
+  fontFamily: "'PT Serif', serif",
   headings: {
     fontFamily: "'Raleway', sans-serif",
     sizes: {
@@ -21,6 +21,12 @@ export const theme: MantineThemeOverride = {
     lg: 20,
     xl: 24,
   },
+  globalStyles: (theme) => ({
+    ".mantine-Button-label": {
+      fontFamily: theme.headings.fontFamily,
+      fontWeight: 400,
+    },
+  }),
   black: "#262421",
   white: "#FCFCFC",
   colors: {

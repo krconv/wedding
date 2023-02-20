@@ -19,9 +19,9 @@ import {
   Title,
   Transition,
 } from "@mantine/core";
-import { IconArrowNarrowLeft, IconX } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useDebouncedValue } from "@mantine/hooks";
+import { IconArrowNarrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import clamp from "lodash/clamp";
 import startCase from "lodash/startCase";

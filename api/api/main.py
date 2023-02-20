@@ -1,12 +1,12 @@
 import asyncio
 import fastapi
 
-from . import config, registry, rsvp, schedule, utils
+from . import config, registry, rsvp, schedule, utils, faqs
 
 utils.sentry.init()
 
 app = fastapi.FastAPI(
-    title="coach",
+    title="wedding",
     openapi_url=f"/api/openapi.json",
     generate_unique_id_function=lambda route: route.name,
 )
@@ -23,6 +23,7 @@ async def shutdown():
         registry.deps.zola_client,
         rsvp.deps.zola_client,
         schedule.deps.zola_client,
+        faqs.deps.zola_client,
     ]
 
     async def close_client_if_needed(client):
@@ -35,3 +36,4 @@ async def shutdown():
 app.include_router(registry.routes.router)
 app.include_router(rsvp.routes.router)
 app.include_router(schedule.routes.router)
+app.include_router(faqs.routes.router)

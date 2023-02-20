@@ -8,6 +8,7 @@ import { CountDown } from "./components/CountDown";
 import { analytics } from "./utils";
 import { Updates } from "./components/Updates";
 import { Registry } from "./components/Registry";
+import { Faqs } from "./components/Faqs";
 
 analytics.init();
 
@@ -18,6 +19,7 @@ export const App: React.FC = () => {
       <Details />
       <Updates />
       <Schedule />
+      <Faqs />
       <Registry />
       <CountDown />
       <Footer />

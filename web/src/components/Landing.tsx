@@ -8,19 +8,18 @@ import {
   Image,
   Stack,
   Text,
+  useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Logo } from "../assets";
-import { Cover } from "../assets";
-import { useMantineTheme } from "@mantine/core";
 import { ReactNode, useCallback, useRef, useState } from "react";
+import { Cover, Logo } from "../assets";
 import { analytics } from "../utils";
 import { Rsvp } from "./Rsvp";
 
 const useStyles = createStyles((theme) => ({
   root: {
     height: "100vh",
-    [`@supports (-webkit-touch-callout: none)`]: {
+    "@supports (-webkit-touch-callout: none)": {
       minHeight: ["100vh", "fill-available"],
     },
   },
@@ -69,7 +68,14 @@ const Header: React.FC = () => {
           <Layout>
             <Stack align="center">
               <Image src={Logo} width={isMobile ? 150 : 200} mt="sm" />
-              <Text mt="-16px" align="center" style={{ fontSize: "12px" }}>
+              <Text
+                mt="-16px"
+                align="center"
+                sx={(theme) => ({
+                  fontFamily: theme.headings.fontFamily,
+                  fontSize: "12px",
+                })}
+              >
                 7.1.23
               </Text>
             </Stack>
@@ -95,10 +101,18 @@ const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
     >
       <Group spacing="xl">
         <Link text="Schedule" elementId="schedule" />
-        <Link text="Registry" elementId="registry" />
         <Link text="FAQs" elementId="faqs" />
+        <Link text="Registry" elementId="registry" />
       </Group>
-      <Button size="md" onClick={() => onOpenRsvpModal()}>
+      <Button
+        size="md"
+        onClick={() => onOpenRsvpModal()}
+        styles={{
+          label: {
+            fontWeight: 600,
+          },
+        }}
+      >
         RSVP
       </Button>
     </Flex>
@@ -123,6 +137,7 @@ const Link: React.FC<{ text: string; elementId: string }> = ({
           ?.scrollIntoView({ behavior: "smooth" });
       }}
       color="earth-green"
+      sx={(theme) => ({ fontFamily: theme.headings.fontFamily })}
       weight={300}
     >
       {text}

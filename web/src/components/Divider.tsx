@@ -1,5 +1,8 @@
-import { createStyles } from "@mantine/core";
-import { Divider as MtDivider } from "@mantine/core";
+import {
+  createStyles,
+  Divider as MtDivider,
+  DividerProps,
+} from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -9,7 +12,8 @@ const useStyles = createStyles((theme) => ({
     borderTopColor: theme.colors["earth-green"][8],
   },
 }));
-export const Divider = () => {
+
+export const Divider: React.FC<DividerProps> = (props) => {
   const { classes } = useStyles();
-  return <MtDivider className={classes.root} my="64px" />;
+  return <MtDivider className={classes.root} {...props} my="64px" />;
 };
