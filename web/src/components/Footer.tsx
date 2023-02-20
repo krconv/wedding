@@ -1,25 +1,26 @@
 import { Image, Stack, Text } from "@mantine/core";
-import { GitHub, LogoSimple } from "../assets";
-import { analytics } from "../utils";
+import { Bridge } from "../assets";
 
 export const Footer: React.FC<{}> = () => {
   return (
     <Stack
       sx={(theme) => ({
         backgroundColor: theme.colors["earth-green"][4],
-        padding: "48px 16px",
+        padding: "24px 16px",
         width: "100%",
       })}
       align="center"
     >
-      <Image src={LogoSimple} width={150} />
+      <Image src={Bridge} width={192} />
       <Text
         size="sm"
         mb="xl"
         align="center"
         sx={(theme) => ({ color: theme.colors["earth-green"][7] })}
       >
-        Engineered by Kodey, supervised by Maddy. Photography by{" "}
+        Engineered by Kodey, supervised by Maddy.
+        <br />
+        Photography by{" "}
         <Text
           inherit
           variant="link"
@@ -29,16 +30,8 @@ export const Footer: React.FC<{}> = () => {
         >
           Kelsey Converse
         </Text>
-        .
+        . Artwork by Tina Farmer.
       </Text>
-      <a
-        href="https://github.com/krconv/wedding"
-        target="_blank"
-        rel="noreferrer"
-        onClick={() => analytics.track("clicked github link")}
-      >
-        <Image width={32} src={GitHub} />
-      </a>
     </Stack>
   );
 };
