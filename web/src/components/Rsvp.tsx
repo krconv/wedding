@@ -37,7 +37,7 @@ import {
   useSearchForGuestGroupQuery,
   useUpdateGuestGroupMutation,
 } from "../store/api";
-import { analytics } from "../utils";
+import { analytics, sentry } from "../utils";
 
 export const Rsvp: React.FC<{}> = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -152,6 +152,16 @@ const FindNameStep: React.FC<{
       {(styles) => (
         <form
           onSubmit={form.onSubmit((values) => {
+            const guest = groups.data
+              ?.find((group) => group.uuid === values.groupUuid)
+              ?.guests.find((guest) => guest.searched_for);
+            if (guest) {
+              sentry.identify({
+                id: guest.uuid,
+                firstName: guest.first_name,
+                lastName: guest.last_name,
+              });
+            }
             setStep("enter-rsvps");
           })}
           style={styles}

@@ -13,3 +13,15 @@ export const init = () => {
     });
   }
 };
+
+export const identify = ({
+  id,
+  firstName,
+  lastName,
+}: {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+}) => {
+  Sentry.setUser({ id, firstName, lastName });
+};
