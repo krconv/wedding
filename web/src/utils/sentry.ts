@@ -3,7 +3,7 @@ import { BrowserTracing } from "@sentry/tracing";
 import { env } from ".";
 
 export const init = () => {
-  if (env.isDeployed) {
+  if (env.IS_DEPLOYED) {
     Sentry.init({
       dsn: "https://cc12e2443ed34ca2b64179f19d2a8008@o4504710244139008.ingest.sentry.io/4504710318063616",
       integrations: [new BrowserTracing(), new Sentry.Replay()],

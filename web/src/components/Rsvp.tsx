@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CloseButton,
   Container,
   Divider,
   Flex,
@@ -18,7 +19,7 @@ import {
   Title,
   Transition,
 } from "@mantine/core";
-import { IconArrowNarrowLeft } from "@tabler/icons-react";
+import { IconArrowNarrowLeft, IconX } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useDebouncedValue } from "@mantine/hooks";
 import dayjs from "dayjs";
@@ -39,11 +40,12 @@ import {
 } from "../store/api";
 import { analytics, sentry } from "../utils";
 
-export const Rsvp: React.FC<{}> = () => {
+export const Rsvp: React.FC<{ opened: boolean; onClose: () => void }> = ({
+  opened,
+  onClose,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   analytics.useTrackView("RSVP", ref);
-
-  const [modalOpened, setModalOpened] = useState<boolean>(false);
 
   const [groupUuid, setGroupUuid] = useState<string | null>(null);
   const [step, setStep] = useState<
@@ -52,18 +54,18 @@ export const Rsvp: React.FC<{}> = () => {
 
   return (
     <>
-      <Button size="md" onClick={() => setModalOpened(true)}>
-        RSVP
-      </Button>
-
       <Modal
-        opened={modalOpened}
-        onClose={() => setModalOpened(false)}
+        opened={opened}
+        onClose={onClose}
+        withCloseButton={false}
         closeOnClickOutside
         fullScreen
         styles={{
+          modal: {
+            padding: "0px",
+          },
           body: {
-            minHeight: "calc(100vh - 84px)",
+            minHeight: "-webkit-fill-available",
             height: "1px",
           },
         }}
@@ -77,22 +79,25 @@ export const Rsvp: React.FC<{}> = () => {
           <FindNameStep
             onChange={({ groupUuid }) => setGroupUuid(groupUuid)}
             setStep={setStep}
+            onClose={onClose}
             active={step === "find-name"}
           />
           <EnterRsvpsStep
             groupGuid={groupUuid}
             setStep={setStep}
+            onClose={onClose}
             active={step === "enter-rsvps"}
           />
           <ConfirmationStep
             groupGuid={groupUuid}
             setStep={setStep}
-            setModalOpened={setModalOpened}
+            onClose={onClose}
             active={step === "confirmation"}
           />
           <ReviewStep
             groupUuid={groupUuid}
             setStep={setStep}
+            onClose={onClose}
             active={step === "review"}
           />
         </Container>
@@ -104,8 +109,9 @@ export const Rsvp: React.FC<{}> = () => {
 const FindNameStep: React.FC<{
   onChange: ({ groupUuid }: { groupUuid: string | null }) => void;
   setStep: (step: "find-name" | "enter-rsvps" | "review") => void;
+  onClose: () => void;
   active: boolean;
-}> = ({ onChange, setStep, active }) => {
+}> = ({ onChange, setStep, onClose, active }) => {
   const form = useForm({
     initialValues: {
       query: "",
@@ -133,7 +139,6 @@ const FindNameStep: React.FC<{
         form.setValues({ groupUuid: "" });
       }
     },
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.values.query]
   );
@@ -167,6 +172,7 @@ const FindNameStep: React.FC<{
           style={styles}
         >
           <Stack h="100%">
+            <EventBackAndCloseHeader onClose={onClose} />
             <Space style={{ flexGrow: 1 }} />
             <Title order={2}>Find your name</Title>
             <Select
@@ -209,8 +215,9 @@ const EnterRsvpsStep: React.FC<{
   setStep: (
     step: "find-name" | "enter-rsvps" | "confirmation" | "review"
   ) => void;
+  onClose: () => void;
   active: boolean;
-}> = ({ groupGuid, setStep, active }) => {
+}> = ({ groupGuid, setStep, onClose, active }) => {
   const [activeEventIndex, setActiveEventIndex] = useState<number>(0);
   const [updateGuestGroupMutation] = useUpdateGuestGroupMutation();
   const group = useGetGuestGroupQuery(
@@ -253,6 +260,7 @@ const EnterRsvpsStep: React.FC<{
               return null;
             }
             return !value &&
+              invitation.rsvp === "attending" &&
               activeEvent?.collect_rsvps &&
               activeEvent?.meal_options.length > 0
               ? "Please select a meal."
@@ -381,29 +389,14 @@ const EnterRsvpsStep: React.FC<{
           })}
           style={styles}
         >
-          <Progress
+          <EventProgressBar
             value={(activeEventIndex / (group.data?.events.length || 1)) * 100}
-            size="md"
-            radius={0}
-            sx={{ position: "absolute", top: 0, right: 0, left: 0 }}
-            styles={{ root: { backgroundColor: "transparent" } }}
           />
-          <Stack sx={{ minHeight: "100%" }}>
-            <Button
-              variant="white"
-              onClick={() => navigate("previous")}
-              sx={{
-                fontWeight: 400,
-                position: "absolute",
-                top: "22px",
-                left: "20px",
-              }}
-              compact
-              leftIcon={<IconArrowNarrowLeft size={16} />}
-              styles={{ inner: { justifyContent: "flex-start" } }}
-            >
-              Back
-            </Button>
+          <EventBackAndCloseHeader
+            onBack={() => navigate("previous")}
+            onClose={onClose}
+          />
+          <Stack sx={{ minHeight: "100%" }} pt={34}>
             <Text>
               Event {activeEventIndex + 1} of {group.data?.events.length ?? 1}
             </Text>
@@ -558,9 +551,9 @@ const EnterRsvpsStep: React.FC<{
 const ConfirmationStep: React.FC<{
   groupGuid: string | null;
   setStep: (step: "find-name" | "enter-rsvps" | "review") => void;
-  setModalOpened: (value: boolean) => void;
+  onClose: () => void;
   active: boolean;
-}> = ({ groupGuid, setStep, setModalOpened, active }) => {
+}> = ({ groupGuid, setStep, onClose, active }) => {
   const group = useGetGuestGroupQuery(
     { uuid: groupGuid! },
     { skip: !groupGuid }
@@ -569,13 +562,13 @@ const ConfirmationStep: React.FC<{
   const navigate = useCallback(
     (direction: "next" | "previous") => {
       if (direction === "next") {
-        setModalOpened(false);
+        onClose();
         setStep("find-name");
       } else if (direction === "previous") {
         setStep("enter-rsvps");
       }
     },
-    [setStep, setModalOpened]
+    [setStep, onClose]
   );
 
   useEffect(
@@ -591,29 +584,12 @@ const ConfirmationStep: React.FC<{
     <Step active={active}>
       {(styles) => (
         <Box style={styles}>
-          <Progress
-            value={100}
-            size="md"
-            radius={0}
-            sx={{ position: "absolute", top: 0, right: 0, left: 0 }}
-            styles={{ root: { backgroundColor: "transparent" } }}
-          />
+          <EventProgressBar value={100} />
           <Stack sx={{ minHeight: "100%", height: "1px" }}>
-            <Button
-              variant="white"
-              onClick={() => navigate("previous")}
-              sx={{
-                fontWeight: 400,
-                position: "absolute",
-                top: "22px",
-                left: "20px",
-              }}
-              compact
-              leftIcon={<IconArrowNarrowLeft size={16} />}
-              styles={{ inner: { justifyContent: "flex-start" } }}
-            >
-              Back
-            </Button>
+            <EventBackAndCloseHeader
+              onBack={() => navigate("previous")}
+              onClose={onClose}
+            />
             <Space style={{ flexGrow: 1 }} />
             {group.isFetching ? (
               <Loader variant="dots" />
@@ -644,7 +620,7 @@ const ConfirmationStep: React.FC<{
               </>
             )}
             <Space style={{ flexGrow: 2 }} />
-            <Button size="lg" mb="md" onClick={() => setModalOpened(false)}>
+            <Button size="lg" mb="md" onClick={() => onClose()}>
               Close
             </Button>
           </Stack>
@@ -657,8 +633,9 @@ const ConfirmationStep: React.FC<{
 const ReviewStep: React.FC<{
   groupUuid: string | null;
   setStep: (step: "find-name" | "enter-rsvps" | "review") => void;
+  onClose: () => void;
   active: boolean;
-}> = ({ groupUuid, setStep, active }) => {
+}> = ({ groupUuid, setStep, onClose, active }) => {
   const group = useGetGuestGroupQuery(
     { uuid: groupUuid! },
     { skip: !groupUuid }
@@ -668,6 +645,7 @@ const ReviewStep: React.FC<{
     <Step active={active}>
       {(styles) => (
         <Stack style={styles}>
+          <EventBackAndCloseHeader onClose={onClose} />
           <Title order={1}>Your RSVP Responses</Title>
           {group.data?.events.map((event) => (
             <Stack>
@@ -754,5 +732,51 @@ const Step: React.FC<{
     >
       {(styles) => children({ ...styles, minHeight: "100%", height: "1px" })}
     </Transition>
+  );
+};
+
+const EventProgressBar: React.FC<{ value: number }> = ({ value }) => {
+  return (
+    <Progress
+      value={value}
+      size="md"
+      radius={0}
+      sx={{ position: "absolute", top: 0, right: 0, left: 0 }}
+      styles={{ root: { backgroundColor: "transparent" } }}
+    />
+  );
+};
+
+const EventBackAndCloseHeader: React.FC<{
+  onClose: () => void;
+  onBack?: () => void;
+}> = ({ onClose, onBack }) => {
+  return (
+    <Group
+      position="apart"
+      sx={{
+        position: "absolute",
+        top: "24px",
+        right: "20px",
+        left: "20px",
+      }}
+    >
+      {onBack ? (
+        <Button
+          variant="white"
+          onClick={() => onBack()}
+          sx={{
+            fontWeight: 400,
+          }}
+          compact
+          leftIcon={<IconArrowNarrowLeft size={16} />}
+        >
+          Back
+        </Button>
+      ) : (
+        <Space />
+      )}
+      <CloseButton onClick={() => onClose()} />
+    </Group>
   );
 };

@@ -12,7 +12,7 @@ const hubSpotEventNames = {
 };
 
 export const init = () => {
-  if (env.isDeployed) {
+  if (env.IS_DEPLOYED) {
     const script = document.createElement("script");
     script.src = "https://js.hs-scripts.com/6389590.js?businessUnitId=457760";
     document.head.append(script);
@@ -25,7 +25,7 @@ export const init = () => {
 
 export const identify = (details: { id: string; email: string }) => {
   console.debug("Identified User", details);
-  if (env.isDeployed) {
+  if (env.IS_DEPLOYED) {
     hubSpotAnalytics().push(["identify", details]);
 
     const identify = new amplitude.Identify();
@@ -40,7 +40,7 @@ export const track = (
   properties: { [key: "section" | string]: string | number | undefined } = {}
 ) => {
   console.debug("Tracked Event", { event, properties });
-  if (env.isDeployed) {
+  if (env.IS_DEPLOYED) {
     hubSpotAnalytics().push([
       "trackCustomBehavioralEvent",
       {

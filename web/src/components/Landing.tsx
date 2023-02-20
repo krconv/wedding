@@ -1,5 +1,6 @@
 import {
   BackgroundImage,
+  Button,
   Container,
   createStyles,
   Flex,
@@ -12,7 +13,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { Logo } from "../assets";
 import { Cover } from "../assets";
 import { useMantineTheme } from "@mantine/core";
-import { ReactNode, useCallback, useMemo, useRef } from "react";
+import { ReactNode, useCallback, useRef, useState } from "react";
 import { analytics } from "../utils";
 import { Rsvp } from "./Rsvp";
 
@@ -44,6 +45,7 @@ export const Landing: React.FC = () => {
 const Header: React.FC = () => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
+  const [rsvpModalOpened, setRsvpModalOpened] = useState(false);
 
   const Layout = useCallback(
     ({ children }: { children: ReactNode }) => {
@@ -59,26 +61,33 @@ const Header: React.FC = () => {
     },
     [isMobile]
   );
-  const nav = useMemo(() => <Nav />, []);
 
   return (
-    <header style={{ width: "100%" }}>
-      <Container size="md">
-        <Layout>
-          <Stack align="center">
-            <Image src={Logo} width={isMobile ? 150 : 200} mt="sm" />
-            <Text mt="-16px" align="center" style={{ fontSize: "12px" }}>
-              7.1.23
-            </Text>
-          </Stack>
-          {nav}
-        </Layout>
-      </Container>
-    </header>
+    <>
+      <header style={{ width: "100%" }}>
+        <Container size="md">
+          <Layout>
+            <Stack align="center">
+              <Image src={Logo} width={isMobile ? 150 : 200} mt="sm" />
+              <Text mt="-16px" align="center" style={{ fontSize: "12px" }}>
+                7.1.23
+              </Text>
+            </Stack>
+            <Nav onOpenRsvpModal={() => setRsvpModalOpened(true)} />
+          </Layout>
+        </Container>
+      </header>
+      <Rsvp
+        opened={rsvpModalOpened}
+        onClose={() => setRsvpModalOpened(false)}
+      />
+    </>
   );
 };
 
-const Nav: React.FC = () => {
+const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
+  onOpenRsvpModal,
+}) => {
   return (
     <Flex
       direction={{ base: "column", xs: "row" }}
@@ -89,7 +98,9 @@ const Nav: React.FC = () => {
         <Link text="Registry" elementId="registry" />
         <Link text="FAQs" elementId="faqs" />
       </Group>
-      <Rsvp />
+      <Button size="md" onClick={() => onOpenRsvpModal()}>
+        RSVP
+      </Button>
     </Flex>
   );
 };

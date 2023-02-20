@@ -1,3 +1,1 @@
-export const isDeployed = !["localhost", "127.0.0.1"].includes(
-  window.location.hostname
-);
+export const IS_DEPLOYED = window.location.protocol === "https:";
