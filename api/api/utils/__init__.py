@@ -1,3 +1,3 @@
-from . import google_secrets
+from . import google_secrets, zola, sentry
 
-__all__ = ["google_secrets"]
+__all__ = ["google_secrets", "zola", "sentry"]

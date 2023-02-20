@@ -8,7 +8,6 @@ import { CountDown } from "./components/CountDown";
 import { analytics } from "./utils";
 import { Updates } from "./components/Updates";
 import { Registry } from "./components/Registry";
-import { Rsvp } from "./components/Rsvp";
 
 analytics.init();
 
@@ -20,7 +19,6 @@ export const App: React.FC = () => {
       <Updates />
       <Schedule />
       <Registry />
-      <Rsvp />
       <CountDown />
       <Footer />
     </AppShell>

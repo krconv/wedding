@@ -5,4 +5,4 @@
 /**
  * An enumeration.
  */
-export type FoodChoice = "beef" | "chicken" | "vegetarian";
+export type Role = "primary" | "partner" | "child";

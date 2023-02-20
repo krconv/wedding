@@ -1,4 +1,4 @@
-import { Box, createStyles, Group, Text, Title } from "@mantine/core";
+import { Box, createStyles, Stack, Text, Title } from "@mantine/core";
 import { useMemo } from "react";
 
 const useStyles = createStyles((theme) => ({
@@ -22,10 +22,10 @@ export const CountDown: React.FC = () => {
   );
   return (
     <Box className={classes.root}>
-      <Group direction="column" spacing={0} position="center">
+      <Stack spacing={0} align="center">
         <Title order={2}>{daysUntil}</Title>
         <Text>days to go</Text>
-      </Group>
+      </Stack>
     </Box>
   );
 };

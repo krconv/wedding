@@ -14,9 +14,9 @@ class EnvType(str, enum.Enum):
 
 class _Config(pydantic.BaseSettings):
     ENV: EnvType = EnvType.dev
-    GOOGLE_CLOUD_PROJECT: str
+    IS_DEPLOYED: bool = False
 
-    HUBSPOT_API_KEY: str | None = None
+    GOOGLE_CLOUD_PROJECT: str
 
     class Config:
         case_sensitive = True
@@ -35,9 +35,7 @@ class _GoogleCloudSettings(pydantic.BaseSettings):
     ENV: EnvType
     GOOGLE_CLOUD_PROJECT: str | None = None
 
-    SECRETS: dict[str, str] = {
-        "HUBSPOT_API_KEY": "hubspot-api-key",
-    }
+    SECRETS: dict[str, str] = {}
 
 
 def _google_cloud_secrets_source(

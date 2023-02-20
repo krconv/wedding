@@ -4,6 +4,8 @@ entrypoint: gunicorn --bind :$PORT --worker-class uvicorn.workers.UvicornWorker 
 
 env_variables:
   ENV: "prod"
+  IS_DEPLOYED: true
+
 
 # these paths rely on the bundle-deploy-dir.sh script
 handlers:

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 export * as worker from "./worker";
+export * as sentry from "./sentry";
 export { theme } from "./theme";
 export * as analytics from "./analytics";
 export * as env from "./env";

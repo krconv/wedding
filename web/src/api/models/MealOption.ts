@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Lodging = {
+export type MealOption = {
   id: string;
   name: string;
-  cost?: number;
 };

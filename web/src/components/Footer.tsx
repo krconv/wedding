@@ -1,18 +1,16 @@
-import { Group, Image, Text } from "@mantine/core";
+import { Image, Stack, Text } from "@mantine/core";
 import { GitHub, LogoSimple } from "../assets";
 import { analytics } from "../utils";
 
 export const Footer: React.FC<{}> = () => {
   return (
-    <Group
-      direction="column"
+    <Stack
       sx={(theme) => ({
         backgroundColor: theme.colors["earth-green"][4],
         padding: "48px 16px",
         width: "100%",
       })}
       align="center"
-      position="center"
     >
       <Image src={LogoSimple} width={150} />
       <Text
@@ -41,6 +39,6 @@ export const Footer: React.FC<{}> = () => {
       >
         <Image width={32} src={GitHub} />
       </a>
-    </Group>
+    </Stack>
   );
 };

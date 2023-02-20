@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type PersonSearchResult = {
+export type Question = {
   id: string;
-  first_name: string;
-  last_name: string;
+  question: string;
 };

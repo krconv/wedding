@@ -8,6 +8,7 @@ import {
   Image,
   Loader,
   SimpleGrid,
+  Stack,
   Text,
   Title,
 } from "@mantine/core";
@@ -24,7 +25,7 @@ export const Registry: React.FC<{}> = () => {
   return (
     <Box id="registry" ref={ref} pt={32} pb={64}>
       <Container size="md">
-        <Group direction="column" position="center">
+        <Stack align="center">
           <Title
             align="center"
             order={1}
@@ -54,10 +55,8 @@ export const Registry: React.FC<{}> = () => {
 
           <Center>
             <Button
-              variant="light"
               size="lg"
               mt="md"
-              radius="sm"
               component="a"
               href="https://www.zola.com/registry/maddyandkodey"
               target="_blank"
@@ -65,19 +64,13 @@ export const Registry: React.FC<{}> = () => {
               styles={(theme) => ({
                 root: {
                   flexGrow: "0 !important" as any,
-                  backgroundColor: theme.colors["midnight-blue"][1],
-                  color: theme.colors["midnight-blue"][8],
-                  "&:hover": {
-                    backgroundColor: theme.colors["midnight-blue"][2],
-                  },
-                  fontWeight: 400,
                 },
               })}
             >
               See more
             </Button>
           </Center>
-        </Group>
+        </Stack>
       </Container>
     </Box>
   );
@@ -94,15 +87,8 @@ const Item: React.FC<{ item: RegistryItem }> = ({ item }) => {
       >
         <Image src={item.image_link} alt={item.title} />
 
-        <Group
-          direction="column"
-          spacing={0}
-          align="apart"
-          p="sm"
-          style={{ flexGrow: 1 }}
-          grow
-        >
-          <Box>
+        <Stack spacing={0} p="sm" sx={{flexGrow: 1}}>
+          <Box sx={{flexGrow: 1}}>
             <Title order={4}>{item.title.split(",")[0]}</Title>
             <Group spacing="xs" align="baseline" position="apart" noWrap>
               <Text weight={400}>{item.brand}</Text>
@@ -116,10 +102,8 @@ const Item: React.FC<{ item: RegistryItem }> = ({ item }) => {
             </Group>
           </Box>
           <Button
-            variant="light"
             fullWidth
             mt="md"
-            radius="sm"
             component="a"
             href={item.buy_link}
             target="_blank"
@@ -129,18 +113,12 @@ const Item: React.FC<{ item: RegistryItem }> = ({ item }) => {
             styles={(theme) => ({
               root: {
                 flexGrow: "0 !important" as any,
-                backgroundColor: theme.colors["midnight-blue"][1],
-                color: theme.colors["midnight-blue"][8],
-                "&:hover": {
-                  backgroundColor: theme.colors["midnight-blue"][2],
-                },
-                fontWeight: 400,
               },
             })}
           >
             More info
           </Button>
-        </Group>
+        </Stack>
       </Card.Section>
     </Card>
   );

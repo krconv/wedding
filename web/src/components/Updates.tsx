@@ -2,7 +2,7 @@ import {
   Box,
   Container,
   createStyles,
-  Group,
+  Stack,
   Text,
   Title,
   useMantineTheme,
@@ -43,7 +43,7 @@ export const Updates: React.FC<{}> = () => {
     <>
       <Box id="updates" ref={ref} className={classes.root} py={64}>
         <Container size="sm">
-          <Group direction="column" position="center" grow>
+          <Stack>
             <Title order={3} align="center"></Title>
             <Text align="center" size="lg">
               We're working on invitations and lodging information now, and will
@@ -53,7 +53,7 @@ export const Updates: React.FC<{}> = () => {
               {" "}
               - Maddy & Kodey, {postedAt}
             </Text>
-          </Group>
+          </Stack>
         </Container>
       </Box>
       <Divider />

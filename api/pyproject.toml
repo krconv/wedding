@@ -8,7 +8,7 @@ packages = [
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-fastapi = "^0.78.0"
+fastapi = "^0.92.0"
 gunicorn = "^20.1.0"
 mypy = "^0.950"
 python = "^3.10"
@@ -16,7 +16,8 @@ uvicorn = {extras = ["standard"], version = "^0.17.6"}
 pydantic = "^1.10.1"
 google-auth = "^2.16.0"
 httpx = "^0.23.3"
-requests = "^2.28.2"
+requests = "2.28.2"
+sentry-sdk = {version = "^1.15.0", extras = ["fastapi"]}
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

@@ -1,14 +1,14 @@
 import { BaseQueryApi, createApi } from "@reduxjs/toolkit/query/react";
+import dayjs from "dayjs";
 import {
   ApiClient,
   Registry,
   CancelablePromise,
   CancelError,
-  Person,
-  Family,
-  Rsvp,
-  RsvpCreate,
-  RsvpUpdate,
+  GuestGroupSearchResult,
+  GuestGroup,
+  GuestGroupUpdate,
+  Event,
 } from "../api";
 
 const LIST = "LIST";
@@ -18,7 +18,7 @@ export const api = createApi({
   reducerPath: "api",
   refetchOnReconnect: true,
   keepUnusedDataFor: 180,
-  tagTypes: ["registry", "people", "families", "rsvps"],
+  tagTypes: ["registry", "guest-groups"],
   endpoints: (builder) => ({
     /**
      * Registry Endpoints
@@ -34,81 +34,48 @@ export const api = createApi({
     /**
      * RSVP Endpoints
      */
-    searchForPerson: builder.query<Person, { q: string }>({
-      query: ({ q }) => ({
-        method: ({ rsvp }) => rsvp.searchForPerson({ q }),
+    searchForGuestGroup: builder.query<GuestGroupSearchResult[], { q: string }>(
+      {
+        query: ({ q }) => ({
+          method: ({ rsvp }) =>
+            rsvp.searchForGuestGroup({ requestBody: { q } }),
+        }),
+      }
+    ),
+
+    getGuestGroup: builder.query<GuestGroup, { uuid: string }>({
+      query: ({ uuid }) => ({
+        method: ({ rsvp }) => rsvp.getGuestGroup({ groupUuid: uuid }),
       }),
+      transformResponse: (guestGroup: GuestGroup) => ({
+        ...guestGroup,
+        events: guestGroup.events.sort((a, b) =>
+          dayjs(a.starts_at).diff(dayjs(b.starts_at), "minutes")
+        ),
+      }),
+      providesTags: (guestGroup) =>
+        guestGroup ? [{ type: "guest-groups", id: guestGroup.id }] : [],
     }),
 
-    getPerson: builder.query<Person, { id: string }>({
-      query: ({ id }) => ({
-        method: ({ rsvp }) => rsvp.getPerson({ personId: id }),
-      }),
-      providesTags: (person) =>
-        person ? [{ type: "people", id: person.id }] : [],
-    }),
-
-    getFamily: builder.query<Family, { id: string }>({
-      query: ({ id }) => ({
-        method: ({ rsvp }) => rsvp.getFamily({ familyId: id }),
-      }),
-      providesTags: (family) => {
-        if (!family) {
-          return [];
-        }
-
-        return [
-          { type: "families", id: family.id },
-          { type: "people", id: `${LIST}-family-${family.id}` },
-          ...family.members.map((person) => ({
-            type: "people" as "people",
-            id: person.id,
-          })),
-          { type: "rsvps", id: `${LIST}-family-${family.id}` },
-          ...family.members
-            .flatMap((person) => (person.rsvp ? [person.rsvp] : []))
-            .map((rsvp) => ({ type: "rsvps" as "rsvps", id: rsvp.id })),
-        ];
-      },
-    }),
-
-    createRsvp: builder.mutation<Rsvp, { data: RsvpCreate }>({
+    updateGuestGroup: builder.mutation<void, { data: GuestGroupUpdate }>({
       query: ({ data }) => ({
-        method: ({ rsvp }) => rsvp.createRsvp({ requestBody: data }),
+        method: ({ rsvp }) => rsvp.updateGuestGroup({ requestBody: data }),
       }),
-      invalidatesTags: (rsvp, error, args) => {
-        if (!rsvp) {
+      invalidatesTags: (guestGroup, error, args) => {
+        if (error) {
           return [];
         }
-        return [
-          { type: "rsvps", id: rsvp.id },
-          ...(args.data.family_id
-            ? [
-                {
-                  type: "families" as "families",
-                  id: `${LIST}-family-${args.data.family_id}`,
-                },
-              ]
-            : []),
-          ...(args.data.person_id
-            ? [
-                {
-                  type: "people" as "people",
-                  id: args.data.person_id,
-                },
-              ]
-            : []),
-        ];
+        return [{ type: "guest-groups", id: args.data.id }];
       },
     }),
 
-    updateRsvp: builder.mutation<void, { id: string; data: RsvpUpdate }>({
-      query: ({ id, data }) => ({
-        method: ({ rsvp }) =>
-          rsvp.updateRsvp({ rsvpId: id, requestBody: data }),
+    /**
+     * Schedule Endpoints
+     */
+    getSchedule: builder.query<Event[], {}>({
+      query: () => ({
+        method: ({ schedule }) => schedule.getSchedule(),
       }),
-      invalidatesTags: (rsvp, error, args) =>
-        rsvp ? [{ type: "rsvps", id: args.id }] : [],
     }),
   }),
 });
@@ -132,7 +99,7 @@ async function baseQuery<Result>(
 
     const promise = args.method(apiInstance);
     signal.onabort = () => promise.cancel();
-    const result = await args.method(apiInstance);
+    const result = await promise;
     return {
       data: result,
     };
@@ -149,9 +116,8 @@ async function baseQuery<Result>(
 export const {
   usePrefetch,
   useGetRegistryQuery,
-  useSearchForPersonQuery,
-  useGetPersonQuery,
-  useGetFamilyQuery,
-  useCreateRsvpMutation,
-  useUpdateRsvpMutation,
+  useSearchForGuestGroupQuery,
+  useGetGuestGroupQuery,
+  useUpdateGuestGroupMutation,
+  useGetScheduleQuery,
 } = api;

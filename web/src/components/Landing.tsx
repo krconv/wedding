@@ -2,16 +2,19 @@ import {
   BackgroundImage,
   Container,
   createStyles,
+  Flex,
   Group,
   Image,
+  Stack,
   Text,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Logo } from "../assets";
 import { Cover } from "../assets";
 import { useMantineTheme } from "@mantine/core";
-import { useRef } from "react";
+import { ReactNode, useCallback, useMemo, useRef } from "react";
 import { analytics } from "../utils";
+import { Rsvp } from "./Rsvp";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -31,10 +34,10 @@ export const Landing: React.FC = () => {
   analytics.useTrackView("Landing", ref);
 
   return (
-    <Group id="landing" ref={ref} className={classes.root} direction="column">
+    <Stack id="landing" ref={ref} className={classes.root}>
       <Header />
       <BackgroundImage className={classes.image} src={Cover} />
-    </Group>
+    </Stack>
   );
 };
 
@@ -42,22 +45,34 @@ const Header: React.FC = () => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
 
+  const Layout = useCallback(
+    ({ children }: { children: ReactNode }) => {
+      if (isMobile) {
+        return <Stack align="center">{children}</Stack>;
+      } else {
+        return (
+          <Group position="apart" align="flex-end">
+            {children}
+          </Group>
+        );
+      }
+    },
+    [isMobile]
+  );
+  const nav = useMemo(() => <Nav />, []);
+
   return (
     <header style={{ width: "100%" }}>
       <Container size="md">
-        <Group
-          position="apart"
-          align={isMobile ? "center" : "flex-end"}
-          direction={isMobile ? "column" : "row"}
-        >
-          <Group direction="column" align="center">
+        <Layout>
+          <Stack align="center">
             <Image src={Logo} width={isMobile ? 150 : 200} mt="sm" />
             <Text mt="-16px" align="center" style={{ fontSize: "12px" }}>
               7.1.23
             </Text>
-          </Group>
-          <Nav />
-        </Group>
+          </Stack>
+          {nav}
+        </Layout>
       </Container>
     </header>
   );
@@ -65,13 +80,17 @@ const Header: React.FC = () => {
 
 const Nav: React.FC = () => {
   return (
-    <Group spacing="xl">
-      <Link text="Updates" elementId="updates" />
-      <Link text="Schedule" elementId="schedule" />
-      <Link text="Registry" elementId="registry" />
-      {/* <Link text="RSVP" elementId="rsvp" /> */}
-      {/* <Link text="FAQs" /> */}
-    </Group>
+    <Flex
+      direction={{ base: "column", xs: "row" }}
+      sx={(theme) => ({ gap: theme.spacing.xl })}
+    >
+      <Group spacing="xl">
+        <Link text="Schedule" elementId="schedule" />
+        <Link text="Registry" elementId="registry" />
+        <Link text="FAQs" elementId="faqs" />
+      </Group>
+      <Rsvp />
+    </Flex>
   );
 };
 

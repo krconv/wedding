@@ -4,12 +4,10 @@ import decimal
 import httpx
 
 from . import schemas
+from .. import utils
 
 
-class ZolaClient:
-    def __init__(self, client: httpx.AsyncClient | None = None):
-        self._client = client or httpx.AsyncClient()
-
+class ZolaClient(utils.zola.ZolaClientBase):
     async def fetch_registry(self) -> schemas.Registry:
         data = await self._fetch_registry_data()
 
@@ -34,7 +32,6 @@ class ZolaClient:
         return [self._map_item(item_data) for item_data in data]
 
     def _map_item(self, data: dict) -> schemas.RegistryItem:
-        print(data)
         return schemas.RegistryItem(
             id=data["object_id"],
             title=data["name"],
@@ -44,6 +41,3 @@ class ZolaClient:
             else None,
             image_link=data["images"][0]["medium"],
         )
-
-    async def close(self):
-        await self._client.aclose()

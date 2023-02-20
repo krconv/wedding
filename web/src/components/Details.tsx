@@ -3,8 +3,8 @@ import {
   Container,
   createStyles,
   Grid,
-  Group,
   Image,
+  Stack,
   Text,
   useMantineTheme,
 } from "@mantine/core";
@@ -30,7 +30,7 @@ export const Details: React.FC<{}> = () => {
     <>
       <Box ref={ref} className={classes.root} py={64}>
         <Container size="sm">
-          <Group direction="column" position="center" spacing="xl" grow>
+          <Stack spacing="xl">
             <Text
               align="center"
               style={{
@@ -46,7 +46,7 @@ export const Details: React.FC<{}> = () => {
             >
               July 1st, 2023 • Tamworth, NH
             </Text>
-          </Group>
+          </Stack>
         </Container>
       </Box>
       <Container size="lg" pb={32}>

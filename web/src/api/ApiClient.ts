@@ -7,12 +7,14 @@ import { AxiosHttpRequest } from "./core/AxiosHttpRequest";
 
 import { RegistryService } from "./services/RegistryService";
 import { RsvpService } from "./services/RsvpService";
+import { ScheduleService } from "./services/ScheduleService";
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
 export class ApiClient {
   public readonly registry: RegistryService;
   public readonly rsvp: RsvpService;
+  public readonly schedule: ScheduleService;
 
   public readonly request: BaseHttpRequest;
 
@@ -34,5 +36,6 @@ export class ApiClient {
 
     this.registry = new RegistryService(this.request);
     this.rsvp = new RsvpService(this.request);
+    this.schedule = new ScheduleService(this.request);
   }
 }
