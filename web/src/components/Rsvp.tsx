@@ -24,8 +24,10 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { IconArrowNarrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import clamp from "lodash/clamp";
+import sortBy from "lodash/sortBy";
 import startCase from "lodash/startCase";
 import React, {
+  forwardRef,
   useCallback,
   useEffect,
   useMemo,
@@ -51,6 +53,12 @@ export const Rsvp: React.FC<{ opened: boolean; onClose: () => void }> = ({
   const [step, setStep] = useState<
     "find-name" | "enter-rsvps" | "confirmation" | "review"
   >("find-name");
+
+  useEffect(() => {
+    if (!groupUuid && !opened) {
+      setStep("find-name");
+    }
+  }, [groupUuid, opened]);
 
   return (
     <>
@@ -105,6 +113,20 @@ export const Rsvp: React.FC<{ opened: boolean; onClose: () => void }> = ({
     </>
   );
 };
+
+const SelectItemWithDescription = forwardRef<
+  HTMLDivElement,
+  { label: string; description: string }
+>(({ label, description, ...others }, ref) => (
+  <div ref={ref} {...others}>
+    <Text>{label}</Text>
+    {description && (
+      <Text size="sm" opacity={0.65}>
+        {description}
+      </Text>
+    )}
+  </div>
+));
 
 const FindNameStep: React.FC<{
   onChange: ({ groupUuid }: { groupUuid: string | null }) => void;
@@ -181,17 +203,40 @@ const FindNameStep: React.FC<{
                   value: group.uuid,
                   label: group.guests
                     .filter((guest) => guest.searched_for)
-                    .map(
-                      (guest) => `${guest.first_name} ${guest.last_name}`
+                    .map((guest) =>
+                      `${guest.first_name} ${guest.last_name ?? ""}`.trim()
                     )[0],
+                  description: (() => {
+                    const names = sortBy(group.guests, (guest) => {
+                      if (guest.searched_for) {
+                        return -1;
+                      } else if (guest.role === "primary") {
+                        return 0;
+                      } else if (guest.role === "partner") {
+                        return 1;
+                      } else {
+                        return 2;
+                      }
+                    })
+                      .map((guest) => guest.first_name)
+                      .filter((name) => name != null);
+                    if (names.length === 1) {
+                      return null;
+                    } else {
+                      const last = names.splice(-1)[0];
+                      return names.join(", ") + " and " + last;
+                    }
+                  })(),
                 })) ?? []),
               ]}
+              itemComponent={SelectItemWithDescription}
               searchable
               searchValue={form.values.query}
               onSearchChange={(value) => form.setFieldValue("query", value)}
               {...form.getInputProps("groupUuid")}
               icon={null}
               size="lg"
+              filter={() => true}
             />
             <Space style={{ flexGrow: 2 }} />
             <Button
@@ -620,7 +665,7 @@ const ConfirmationStep: React.FC<{
               </>
             )}
             <Space style={{ flexGrow: 2 }} />
-            <Button size="lg" mb="md" onClick={() => onClose()}>
+            <Button size="lg" mb="md" onClick={() => navigate("next")}>
               Close
             </Button>
           </Stack>
