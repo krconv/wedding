@@ -31,3 +31,6 @@ handlers:
 
 manual_scaling:
   instances: 1
+
+health_check:
+  enable_health_check: False
