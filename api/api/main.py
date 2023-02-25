@@ -1,7 +1,8 @@
 import asyncio
+
 import fastapi
 
-from . import config, registry, rsvp, schedule, utils, faqs
+from . import config, faqs, registry, rsvp, schedule, utils
 
 utils.sentry.init()
 
@@ -31,6 +32,11 @@ async def shutdown():
             await client.close()
 
     await asyncio.gather(*[close_client_if_needed(client) for client in clients])
+
+
+@app.get("/_ah/start", status_code=200, include_in_schema=False)
+def is_started():
+    return ""
 
 
 app.include_router(registry.routes.router)
