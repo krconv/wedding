@@ -1,10 +1,11 @@
-import typing
-import fastapi
 import decimal
+import typing
+
+import fastapi
 import httpx
 
-from . import schemas
 from .. import utils
+from . import schemas
 
 
 class ZolaClient(utils.zola.ZolaClientBase):
@@ -19,7 +20,7 @@ class ZolaClient(utils.zola.ZolaClientBase):
             json={"registry_key": "maddyandkodey", "flattened_view": True},
         )
         if response.status_code != fastapi.status.HTTP_200_OK:
-            raise Exception("Error while fetching from Zola: " + await response.text())
+            raise Exception("Error while fetching from Zola: " + response.text)
         return response.json()
 
     def _map_registry_data(self, data: dict) -> schemas.Registry:

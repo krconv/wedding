@@ -1,7 +1,7 @@
 import fastapi
 
-from . import schemas
 from .. import utils
+from . import schemas
 
 
 class ZolaClient(utils.zola.ZolaClientBase):
@@ -13,7 +13,7 @@ class ZolaClient(utils.zola.ZolaClientBase):
             json={"guest_name": q},
         )
         if response.status_code != fastapi.status.HTTP_200_OK:
-            raise Exception("Error while fetching from Zola: " + await response.text())
+            raise Exception("Error while fetching from Zola: " + response.text)
         results = [
             schemas.GuestGroupSearchResult.from_zola_api(group)
             for group in response.json()
@@ -28,7 +28,7 @@ class ZolaClient(utils.zola.ZolaClientBase):
             f"https://www.zola.com/web-api/v2/publicwedding/rsvp/guest/uuid/{uuid}/wedding_account/id/2438167"
         )
         if response.status_code != fastapi.status.HTTP_200_OK:
-            raise Exception("Error while fetching from Zola: " + await response.text())
+            raise Exception("Error while fetching from Zola: " + response.text)
         return schemas.GuestGroup.from_zola_api(response.json())
 
     async def update_guest_group(self, group_in: schemas.GuestGroupUpdate) -> None:
@@ -37,4 +37,4 @@ class ZolaClient(utils.zola.ZolaClientBase):
             json=group_in.to_zola_api(),
         )
         if response.status_code != fastapi.status.HTTP_200_OK:
-            raise Exception("Error while fetching from Zola: " + await response.text())
+            raise Exception("Error while fetching from Zola: " + response.text)
