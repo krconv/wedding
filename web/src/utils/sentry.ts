@@ -19,12 +19,14 @@ export const identify = ({
   id,
   firstName,
   lastName,
+  email,
 }: {
   id?: string;
   firstName?: string;
   lastName?: string;
+  email?: string;
 }) => {
-  Sentry.setUser({ id, firstName, lastName });
+  Sentry.setUser({ id, email, firstName, lastName });
 };
 
 export const capture = (err: Error, context?: CaptureContext) => {

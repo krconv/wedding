@@ -183,7 +183,7 @@ const FindNameStep: React.FC<{
               ?.find((group) => group.uuid === values.groupUuid)
               ?.guests.find((guest) => guest.searched_for);
             if (guest) {
-              sentry.identify({
+              analytics.identify({
                 id: guest.uuid,
                 firstName: guest.first_name,
                 lastName: guest.last_name,

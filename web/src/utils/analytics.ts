@@ -1,6 +1,7 @@
 import amplitude from "amplitude-js";
 import { MutableRefObject, useEffect, useState } from "react";
 import { env, useDebounced } from ".";
+import * as sentry from "./sentry";
 
 const hubSpotEventNames = {
   "viewed section": "pe6389590_viewed_section",
@@ -23,15 +24,22 @@ export const init = () => {
   }
 };
 
-export const identify = (details: { id: string; email: string }) => {
+export const identify = (details: {
+  id: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+}) => {
   console.debug("Identified User", details);
   if (env.IS_DEPLOYED) {
     hubSpotAnalytics().push(["identify", details]);
 
     const identify = new amplitude.Identify();
     identify.set("id", details.id);
-    identify.set("email", details.email);
+    if (details.email) identify.set("email", details.email);
     amplitude.identify(identify);
+
+    sentry.identify(details);
   }
 };
 
