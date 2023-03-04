@@ -89,7 +89,11 @@ const registerServiceWorker = () => {
 
       // check for updates every 30 seconds
       setInterval(() => {
-        registration.update();
+        registration
+          .update()
+          .catch((error) =>
+            console.warn("Error checking for service updates:", error)
+          );
       }, 30000);
 
       // subscribe to any registration changes for service workers

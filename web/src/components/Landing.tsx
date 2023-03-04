@@ -1,5 +1,6 @@
 import {
   BackgroundImage,
+  Button,
   Container,
   createStyles,
   Flex,
@@ -103,7 +104,7 @@ const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
         <Link text="FAQs" elementId="faqs" />
         <Link text="Registry" elementId="registry" />
       </Group>
-      {/*<Button
+      <Button
         size="md"
         onClick={() => onOpenRsvpModal()}
         styles={{
@@ -113,7 +114,7 @@ const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
         }}
       >
         RSVP
-      </Button>*/}
+      </Button>
     </Flex>
   );
 };

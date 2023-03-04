@@ -40,7 +40,7 @@ import {
   useSearchForGuestGroupQuery,
   useUpdateGuestGroupMutation,
 } from "../store/api";
-import { analytics, sentry } from "../utils";
+import { analytics } from "../utils";
 
 export const Rsvp: React.FC<{ opened: boolean; onClose: () => void }> = ({
   opened,
@@ -358,6 +358,7 @@ const EnterRsvpsStep: React.FC<{
           );
         };
         form.reset();
+        const existingAnswers = group.data.answers;
         form.setValues({
           guests: group.data.guests.filter(
             (guest) => !isInactivePlusOne(guest)
@@ -365,7 +366,15 @@ const EnterRsvpsStep: React.FC<{
           plusOnes: group.data.guests.filter((guest) =>
             isInactivePlusOne(guest)
           ),
-          answers: group.data.answers,
+          answers: group.data.events
+            .filter((event) => event.collect_rsvps)
+            .flatMap((event) => event.questions)
+            .map(
+              (question) =>
+                existingAnswers.find(
+                  (answer) => answer.question_id === question.id
+                ) ?? { question_id: question.id, answer: "" }
+            ),
         });
       }
     },

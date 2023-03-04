@@ -32,7 +32,7 @@ export const identify = (details: {
 }) => {
   console.debug("Identified User", details);
   if (env.IS_DEPLOYED) {
-    hubSpotAnalytics().push(["identify", details]);
+    hubSpotAnalytics()?.push(["identify", details]);
 
     const identify = new amplitude.Identify();
     identify.set("id", details.id);
@@ -49,7 +49,7 @@ export const track = (
 ) => {
   console.debug("Tracked Event", { event, properties });
   if (env.IS_DEPLOYED) {
-    hubSpotAnalytics().push([
+    hubSpotAnalytics()?.push([
       "trackCustomBehavioralEvent",
       {
         name: hubSpotEventNames[event],
@@ -91,6 +91,6 @@ export const useTrackView = (
   }, [debouncedInView, name]);
 };
 
-const hubSpotAnalytics = () => {
-  return (window as any)._hsq;
+const hubSpotAnalytics = (): any[] | null => {
+  return ((window as any)._hsq as any[]) ?? null;
 };
