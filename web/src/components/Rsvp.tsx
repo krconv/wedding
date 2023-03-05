@@ -471,7 +471,11 @@ const EnterRsvpsStep: React.FC<{
                   ? dayjs(activeEvent?.ends_at).format(" [to] h:mm a")
                   : "")}
             </Text>
-            {activeEvent?.note && <Text>{activeEvent?.note} </Text>}
+            {activeEvent?.note &&
+              activeEvent?.note
+                .split("\n")
+                .filter((line) => line)
+                .map((line) => <Text>{line}</Text>)}
             {activeEvent?.attire && <Text>{activeEvent?.attire} </Text>}
             {activeEvent?.collect_rsvps ? (
               <>

@@ -1,15 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import { App } from "./App";
-import { sentry, theme, worker } from "./utils";
 import { MantineProvider } from "@mantine/core";
-import { Provider as ReduxProvider } from "react-redux";
-import { store } from "./store";
+import { Profiler } from "@sentry/react";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import calendar from "dayjs/plugin/calendar";
-import { Profiler } from "@sentry/react";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider as ReduxProvider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { App } from "./App";
+import "./index.css";
+import { store } from "./store";
+import { sentry, theme, worker } from "./utils";
 
 sentry.init();
 worker.init();
@@ -24,9 +25,11 @@ root.render(
   <React.StrictMode>
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
       <ReduxProvider store={store}>
-        <Profiler name="App">
-          <App />
-        </Profiler>
+        <BrowserRouter>
+          <Profiler name="App">
+            <App />
+          </Profiler>
+        </BrowserRouter>
       </ReduxProvider>
     </MantineProvider>
   </React.StrictMode>

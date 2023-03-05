@@ -11,7 +11,8 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { ReactNode, useCallback, useRef, useState } from "react";
+import { ReactNode, useCallback, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Cover, Logo } from "../assets";
 import { analytics } from "../utils";
 import { Rsvp } from "./Rsvp";
@@ -44,7 +45,13 @@ export const Landing: React.FC = () => {
 const Header: React.FC = () => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
-  const [rsvpModalOpened, setRsvpModalOpened] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const rsvpModalOpened = location.pathname === "/rsvp";
+  const setRsvpModalOpened = useCallback(
+    (opened: boolean) => navigate(opened ? "/rsvp" : "/"),
+    [navigate]
+  );
 
   const Layout = useCallback(
     ({ children }: { children: ReactNode }) => {
@@ -105,10 +112,7 @@ const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
         <Link text="FAQs" elementId="faqs" />
         <Link text="Registry" elementId="registry" />
       </Group>
-      <Button
-        size="md"
-        onClick={() => onOpenRsvpModal()}
-      >
+      <Button size="md" onClick={() => onOpenRsvpModal()}>
         RSVP
       </Button>
     </Flex>
