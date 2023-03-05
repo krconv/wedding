@@ -23,7 +23,9 @@ export const CountDown: React.FC = () => {
   return (
     <Box className={classes.root}>
       <Stack spacing={0} align="center">
-        <Title order={2}>{daysUntil}</Title>
+        <Title order={2} mb="-12px">
+          {daysUntil}
+        </Title>
         <Text>days to go</Text>
       </Stack>
     </Box>

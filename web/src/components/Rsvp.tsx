@@ -319,6 +319,10 @@ const EnterRsvpsStep: React.FC<{
     () => group.data?.events[activeEventIndex] ?? null,
     [group.data?.events, activeEventIndex]
   );
+  const isLodging = useMemo(
+    () => activeEvent?.name.startsWith("Lodging"),
+    [activeEvent?.name]
+  );
   const isLastEvent = activeEventIndex === (group.data?.events.length ?? 1) - 1;
 
   const navigate = useCallback(
@@ -454,7 +458,11 @@ const EnterRsvpsStep: React.FC<{
             <Text>
               Event {activeEventIndex + 1} of {group.data?.events.length ?? 1}
             </Text>
-            <Title order={2}>{activeEvent?.name}</Title>
+            <Title order={2}>
+              {isLodging && activeEvent?.name.includes("Cottage")
+                ? "Lodging - On-site Cottage"
+                : activeEvent?.name}
+            </Title>
             <Text>
               {dayjs(activeEvent?.starts_at).format(
                 "dddd, MMMM Do [at] h:mm a"

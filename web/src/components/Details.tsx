@@ -26,17 +26,23 @@ export const Details: React.FC<{}> = () => {
             <Text
               align="center"
               style={{
-                fontFamily: '"Ms Madi", cursive',
-                fontSize: isMobile ? "48px" : "72px",
+                fontFamily: '"Aire Pro", cursive',
+                fontSize: isMobile ? "64px" : "96px",
+                fontWeight: 500,
+                textTransform: "uppercase",
               }}
             >
-              Maddy & Kodey
+              <Text inherit>Madelyn</Text>
+              <Text inherit mt={isMobile ? "-48px" : "-64px"}>
+                & Kodey
+              </Text>
             </Text>
             <Text
               align="center"
               sx={(theme) => ({
                 fontSize: isMobile ? "18px" : "24px",
                 fontFamily: theme.headings.fontFamily,
+                fontWeight: 600,
               })}
             >
               July 1st, 2023 • Tamworth, NH

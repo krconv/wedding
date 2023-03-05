@@ -1,4 +1,4 @@
-import { Image, Stack, Text } from "@mantine/core";
+import { getDefaultZIndex, Image, Stack, Text } from "@mantine/core";
 import { Bridge } from "../assets";
 
 export const Footer: React.FC<{}> = () => {
@@ -8,6 +8,8 @@ export const Footer: React.FC<{}> = () => {
         backgroundColor: theme.colors["earth-green"][4],
         padding: "24px 16px",
         width: "100%",
+        position: "relative",
+        zIndex: getDefaultZIndex("max")
       })}
       align="center"
     >
