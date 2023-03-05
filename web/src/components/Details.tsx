@@ -42,7 +42,7 @@ export const Details: React.FC<{}> = () => {
               sx={(theme) => ({
                 fontSize: isMobile ? "18px" : "24px",
                 fontFamily: theme.headings.fontFamily,
-                fontWeight: 600,
+                fontWeight: 500,
               })}
             >
               July 1st, 2023 • Tamworth, NH

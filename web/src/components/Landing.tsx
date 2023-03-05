@@ -1,6 +1,5 @@
 import {
   BackgroundImage,
-  Button,
   Container,
   createStyles,
   Flex,
@@ -80,7 +79,7 @@ const Header: React.FC = () => {
                 align="center"
                 sx={(theme) => ({
                   fontFamily: theme.headings.fontFamily,
-                  fontWeight: 600,
+                  fontWeight: 500,
                   fontSize: "12px",
                 })}
               >
@@ -112,9 +111,9 @@ const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
         <Link text="FAQs" elementId="faqs" />
         <Link text="Registry" elementId="registry" />
       </Group>
-      <Button size="md" onClick={() => onOpenRsvpModal()}>
+      {/* <Button size="md" onClick={() => onOpenRsvpModal()}>
         RSVP
-      </Button>
+      </Button> */}
     </Flex>
   );
 };
