@@ -2,10 +2,9 @@
 
 @font-face {
     font-family: 'Aire Pro';
-    src: local('Aire Pro'), local('AirePro'),
-        url('assets/AirePro.woff2') format('woff2'),
-        url('assets/AirePro.woff') format('woff');
-    font-weight: normal;
+    src: local('Aire Pro'), local('Aire Pro'),
+        url('assets/Aire Pro.woff2') format('woff2');
+    font-weight: 500;
     font-style: normal;
     font-display: swap;
 }

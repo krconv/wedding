@@ -79,7 +79,7 @@ const Header: React.FC = () => {
                 align="center"
                 sx={(theme) => ({
                   fontFamily: theme.headings.fontFamily,
-                  fontWeight: 500,
+                  fontWeight: 600,
                   fontSize: "12px",
                 })}
               >

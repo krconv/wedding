@@ -831,9 +831,6 @@ const EventBackAndCloseHeader: React.FC<{
         <Button
           variant="white"
           onClick={() => onBack()}
-          sx={{
-            fontWeight: 500,
-          }}
           compact
           leftIcon={<IconArrowNarrowLeft size={16} />}
         >

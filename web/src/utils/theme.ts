@@ -12,7 +12,7 @@ export const theme: MantineThemeOverride = {
       h2: { fontSize: 36 },
       h3: { fontSize: 28 },
     },
-    fontWeight: 500,
+    fontWeight: 600,
   },
   fontSizes: {
     xs: 12,
@@ -25,7 +25,7 @@ export const theme: MantineThemeOverride = {
     ".mantine-Button-label": {
       fontFamily: theme.headings.fontFamily,
       margin: "2px 0 -2px 0",
-      fontWeight: 500,
+      fontWeight: 600,
     },
   }),
   black: "#262421",

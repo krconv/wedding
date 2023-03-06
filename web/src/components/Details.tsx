@@ -28,7 +28,7 @@ export const Details: React.FC<{}> = () => {
               style={{
                 fontFamily: '"Aire Pro", cursive',
                 fontSize: isMobile ? "64px" : "96px",
-                fontWeight: 500,
+                fontWeight: 600,
                 textTransform: "uppercase",
               }}
             >
@@ -42,7 +42,7 @@ export const Details: React.FC<{}> = () => {
               sx={(theme) => ({
                 fontSize: isMobile ? "18px" : "24px",
                 fontFamily: theme.headings.fontFamily,
-                fontWeight: 500,
+                fontWeight: 600,
               })}
             >
               July 1st, 2023 • Tamworth, NH
