@@ -28,7 +28,7 @@ export const Details: React.FC<{}> = () => {
               style={{
                 fontFamily: '"Aire Pro", cursive',
                 fontSize: isMobile ? "64px" : "96px",
-                fontWeight: 600,
+                fontWeight: 500,
                 textTransform: "uppercase",
               }}
             >
