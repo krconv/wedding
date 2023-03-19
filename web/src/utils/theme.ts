@@ -9,8 +9,9 @@ export const theme: MantineThemeOverride = {
     fontFamily: "'PT Serif', serif",
     sizes: {
       h1: { fontSize: 42 },
-      h2: { fontSize: 36 },
-      h3: { fontSize: 28 },
+      h2: { fontSize: 32 },
+      h3: { fontSize: 24 },
+      h4: { fontSize: 20},
     },
     fontWeight: 400,
   },

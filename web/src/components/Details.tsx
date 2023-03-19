@@ -27,9 +27,10 @@ export const Details: React.FC<{}> = () => {
               align="center"
               style={{
                 fontFamily: '"Aire", serif',
-                fontSize: isMobile ? "64px" : "96px",
+                fontSize: isMobile ? "64px" : "108px",
+                fontWeight: isMobile ? "bold" : "normal",
                 textTransform: "uppercase",
-                color: theme.colors["earth-green"][6]
+                color: theme.colors["earth-green"][6],
               }}
             >
               <Text inherit>Madelyn</Text>

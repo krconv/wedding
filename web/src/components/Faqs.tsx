@@ -49,7 +49,7 @@ export const Faqs: React.FC<{}> = () => {
                 : faqs.data?.map((faq) => (
                     <Accordion.Item key={faq.question} value={faq.question}>
                       <Accordion.Control>
-                        <Title order={4}>{faq.question}</Title>
+                        <Title order={3}>{faq.question}</Title>
                       </Accordion.Control>
                       <Accordion.Panel>
                         {faq.answer.split("\n").map((line, index) => (

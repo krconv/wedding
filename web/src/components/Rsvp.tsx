@@ -30,6 +30,7 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -154,6 +155,7 @@ const FindNameStep: React.FC<{
     { uuid: form.values.groupUuid! },
     { skip: !form.values.groupUuid }
   );
+  const ref = useRef<HTMLInputElement>(null);
 
   useEffect(
     function clearSelectedValue() {
@@ -169,6 +171,7 @@ const FindNameStep: React.FC<{
     function triggerOnChange() {
       if (form.values.groupUuid) {
         onChange({ groupUuid: form.values.groupUuid || null });
+        ref.current?.blur();
       }
     },
     [onChange, form.values.groupUuid]
@@ -198,6 +201,8 @@ const FindNameStep: React.FC<{
             <Space style={{ flexGrow: 1 }} />
             <Title order={2}>Find your name</Title>
             <Select
+              ref={ref}
+              autoComplete="off"
               data={[
                 ...(groups.data?.map((group) => ({
                   value: group.uuid,
@@ -427,6 +432,13 @@ const EnterRsvpsStep: React.FC<{
       }
     },
     [active]
+  );
+
+  useLayoutEffect(
+    function scrollToTopOnNavigate() {
+      window.scrollTo(0, 0);
+    },
+    [activeEventIndex]
   );
 
   return (
