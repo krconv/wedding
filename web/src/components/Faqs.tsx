@@ -4,7 +4,6 @@ import {
   Container,
   Skeleton,
   Stack,
-  Text,
   Title,
 } from "@mantine/core";
 import { range } from "lodash";
@@ -12,6 +11,7 @@ import React, { useRef } from "react";
 import { useGetFaqsQuery } from "../store/api";
 import { analytics } from "../utils";
 import { Divider } from "./Divider";
+import { Markdown } from "./Markdown";
 
 export const Faqs: React.FC<{}> = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -52,9 +52,7 @@ export const Faqs: React.FC<{}> = () => {
                         <Title order={3}>{faq.question}</Title>
                       </Accordion.Control>
                       <Accordion.Panel>
-                        {faq.answer.split("\n").map((line, index) => (
-                          <Text key={index}>{line}</Text>
-                        ))}
+                        <Markdown>{faq.answer}</Markdown>
                       </Accordion.Panel>
                     </Accordion.Item>
                   ))}

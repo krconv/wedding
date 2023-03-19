@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { useRef } from "react";
 import { useGetUpdateMessageQuery } from "../store/api";
 import { analytics } from "../utils";
+import { Markdown } from "./Markdown";
 
 const growY = {
   in: { maxHeight: "500px" },
@@ -35,9 +36,9 @@ export const Updates: React.FC<{}> = () => {
               pb="md"
             >
               <Title order={3} align="center"></Title>
-              <Text align="center" size="lg">
+              <Markdown align="center" size="lg">
                 {updateMessage.data?.message ?? ""}
-              </Text>
+              </Markdown>
               <Text align="center" size="sm" style={{ fontStyle: "italic" }}>
                 {" "}
                 - Maddy & Kodey
