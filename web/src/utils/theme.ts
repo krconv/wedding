@@ -6,13 +6,13 @@ export const theme: MantineThemeOverride = {
   defaultRadius: 8,
   fontFamily: "'PT Serif', serif",
   headings: {
-    fontFamily: "'Aire Pro', sans-serif",
+    fontFamily: "'PT Serif', serif",
     sizes: {
       h1: { fontSize: 42 },
       h2: { fontSize: 36 },
       h3: { fontSize: 28 },
     },
-    fontWeight: 600,
+    fontWeight: 400,
   },
   fontSizes: {
     xs: 12,
@@ -23,9 +23,8 @@ export const theme: MantineThemeOverride = {
   },
   globalStyles: (theme) => ({
     ".mantine-Button-label": {
-      fontFamily: theme.headings.fontFamily,
-      margin: "2px 0 -2px 0",
-      fontWeight: 600,
+      fontFamily: theme.fontFamily,
+      fontWeight: 400,
     },
   }),
   black: "#262421",

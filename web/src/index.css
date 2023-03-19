@@ -1,10 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif&display=swap');
 
 @font-face {
-    font-family: 'Aire Pro';
-    src: local('Aire Pro'), local('Aire Pro'),
-        url('assets/Aire Pro.woff2') format('woff2');
-    font-weight: 500;
+    font-family: 'Aire';
+    src: url('assets/fonts/AireLightPro.woff2') format('woff2'),
+        url('assets/fonts/AireLightPro.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aire';
+    src: url('assets/fonts/AireRomanPro.woff2') format('woff2'),
+        url('assets/fonts/AireRomanPro.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aire';
+    src: url('assets/fonts/AireBoldPro.woff2') format('woff2'),
+        url('assets/fonts/AireBoldPro.woff') format('woff');
+    font-weight: bold;
     font-style: normal;
     font-display: swap;
 }

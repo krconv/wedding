@@ -19,7 +19,10 @@ export const Updates: React.FC<{}> = () => {
   const updateMessage = useGetUpdateMessageQuery({});
 
   return (
-    <Transition mounted={updateMessage.isSuccess} transition={growY}>
+    <Transition
+      mounted={updateMessage.isSuccess && updateMessage.data?.message !== null}
+      transition={growY}
+    >
       {(styles) => (
         <Box id="updates" ref={ref} py={64} style={styles}>
           <Container size="sm">
@@ -33,8 +36,7 @@ export const Updates: React.FC<{}> = () => {
             >
               <Title order={3} align="center"></Title>
               <Text align="center" size="lg">
-                We're working on invitations and lodging information now, and
-                will send them out as soon they are ready!
+                {updateMessage.data?.message ?? ""}
               </Text>
               <Text align="center" size="sm" style={{ fontStyle: "italic" }}>
                 {" "}

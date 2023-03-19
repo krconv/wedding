@@ -26,10 +26,10 @@ export const Details: React.FC<{}> = () => {
             <Text
               align="center"
               style={{
-                fontFamily: '"Aire Pro", cursive',
+                fontFamily: '"Aire", serif',
                 fontSize: isMobile ? "64px" : "96px",
-                fontWeight: 500,
                 textTransform: "uppercase",
+                color: theme.colors["earth-green"][6]
               }}
             >
               <Text inherit>Madelyn</Text>
@@ -41,8 +41,7 @@ export const Details: React.FC<{}> = () => {
               align="center"
               sx={(theme) => ({
                 fontSize: isMobile ? "18px" : "24px",
-                fontFamily: theme.headings.fontFamily,
-                fontWeight: 600,
+                fontWeight: 500,
               })}
             >
               July 1st, 2023 • Tamworth, NH
