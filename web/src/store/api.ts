@@ -127,9 +127,12 @@ async function baseQuery<Result>(
     if (err instanceof ApiError) {
       if (!args.expectedStatusCodes?.includes(err.status)) {
         sentry.capture(
-          new Error(`Unexpected API error: ${err.status} (${err.statusText})`, {
-            cause: err,
-          }),
+          new Error(
+            `Unexpected API error for ${err.request.method} ${err.request.url}: ${err.status} (${err.statusText})`,
+            {
+              cause: err,
+            }
+          ),
           (scope) => scope.setExtras(err)
         );
       }

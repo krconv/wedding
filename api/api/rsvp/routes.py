@@ -1,6 +1,8 @@
+import logging
+
 import fastapi
 
-from . import schemas, deps, zola
+from . import deps, schemas, zola
 
 router = fastapi.APIRouter(prefix="/api/rsvp", tags=["rsvp"])
 
@@ -15,7 +17,9 @@ async def search_for_guest_group(
     q: str = fastapi.Body(embed=True),
     zola_client: zola.ZolaClient = fastapi.Depends(deps.get_zola_client),
 ) -> list[schemas.GuestGroupSearchResult]:
-    return await zola_client.search_for_guest_group(q=q)
+    results = await zola_client.search_for_guest_group(q=q)
+    logging.info(f"Found {len(results)} results for query {q}")
+    return results
 
 
 @router.get(
