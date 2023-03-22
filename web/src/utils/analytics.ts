@@ -40,6 +40,12 @@ export const identify = (details: {
     amplitude.identify(identify);
 
     sentry.identify(details);
+
+    try {
+      (window as any).FS.identify(details.id, {
+        displayName: (details.firstName ?? "") + " " + (details.lastName ?? ""),
+      });
+    } catch (err) {}
   }
 };
 

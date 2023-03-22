@@ -1,3 +1,5 @@
+import asyncio
+
 import fastapi
 
 from .. import utils
@@ -8,20 +10,32 @@ class ZolaClient(utils.zola.ZolaClientBase):
     async def search_for_guest_group(
         self, *, q: str
     ) -> list[schemas.GuestGroupSearchResult]:
-        response = await self._client.post(
-            "https://www.zola.com/web-api/v1/publicwedding/rsvp/guest/wedding_account/uuid/b12b1508-074a-4564-92ec-decc6ddbeb00/search_groups",
-            json={"guest_name": q},
-        )
-        if response.status_code != fastapi.status.HTTP_200_OK:
-            raise Exception("Error while fetching from Zola: " + response.text)
-        results = [
-            schemas.GuestGroupSearchResult.from_zola_api(group)
-            for group in response.json()
+        async def search_(q_: str) -> list[schemas.GuestGroupSearchResult]:
+            response = await self._client.post(
+                "https://www.zola.com/web-api/v1/publicwedding/rsvp/guest/wedding_account/uuid/b12b1508-074a-4564-92ec-decc6ddbeb00/search_groups",
+                json={"guest_name": q_},
+            )
+            if response.status_code != fastapi.status.HTTP_200_OK:
+                raise Exception("Error while fetching from Zola: " + response.text)
+            return [
+                schemas.GuestGroupSearchResult.from_zola_api(group)
+                for group in response.json()
+            ]
+
+        all_results = [
+            result
+            for results in (
+                await asyncio.gather(*[search_(q_) for q_ in [q, *q.split()]])
+            )
+            for result in results
         ]
-        if len(results) > 4:
-            # hide overly broad results
-            return []
-        return results
+        result_uuids = set()
+        deduped_results = []
+        for result in all_results:
+            if result.uuid not in result_uuids:
+                result_uuids.add(result.uuid)
+                deduped_results.append(result)
+        return deduped_results
 
     async def get_guest_group(self, uuid: str) -> schemas.GuestGroup | None:
         response = await self._client.get(

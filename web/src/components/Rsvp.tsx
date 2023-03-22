@@ -237,7 +237,16 @@ const FindNameStep: React.FC<{
               itemComponent={SelectItemWithDescription}
               searchable
               searchValue={form.values.query}
-              onSearchChange={(value) => form.setFieldValue("query", value)}
+              onSearchChange={(value) => {
+                if (
+                  !value &&
+                  !form.values.groupUuid &&
+                  form.values.query.length > 1
+                ) {
+                  return;
+                }
+                form.setFieldValue("query", value);
+              }}
               {...form.getInputProps("groupUuid")}
               icon={null}
               size="lg"
@@ -487,7 +496,7 @@ const EnterRsvpsStep: React.FC<{
               activeEvent?.note
                 .split("\n")
                 .filter((line) => line)
-                .map((line) => <Text>{line}</Text>)}
+                .map((line, i) => <Text key={i}>{line}</Text>)}
             {activeEvent?.attire && <Text>{activeEvent?.attire} </Text>}
             {activeEvent?.collect_rsvps ? (
               <>
@@ -726,7 +735,7 @@ const ReviewStep: React.FC<{
           <EventBackAndCloseHeader onClose={onClose} />
           <Title order={1}>Your RSVP Responses</Title>
           {group.data?.events.map((event) => (
-            <Stack>
+            <Stack key={event.id}>
               <Title order={2}>{event.name}</Title>
               <Text>
                 {dayjs(event.starts_at).format("dddd, MMMM Do [at] h:mm a") +
