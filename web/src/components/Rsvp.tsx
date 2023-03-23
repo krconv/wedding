@@ -200,6 +200,7 @@ const FindNameStep: React.FC<{
             <EventBackAndCloseHeader onClose={onClose} />
             <Space style={{ flexGrow: 1 }} />
             <Title order={2}>Find your name</Title>
+            <Text>Type in your name below to find your invitation.</Text>
             <Select
               ref={ref}
               autoComplete="off"
