@@ -296,7 +296,6 @@ const EnterRsvpsStep: React.FC<{
     validate: {
       guests: {
         first_name: (value) => (!value ? true : null),
-        last_name: (value) => (!value ? true : null),
 
         invitations: {
           rsvp: (value, values: any, path) => {
@@ -512,9 +511,9 @@ const EnterRsvpsStep: React.FC<{
                         group.data?.guests[guestIndex].last_name) ||
                       !isPlusOne ? (
                         <Title order={3}>
-                          {guest.first_name && guest.last_name
-                            ? `${guest.first_name} ${guest.last_name}`
-                            : "Guest"}
+                          {`${guest.first_name ?? ""} ${
+                            guest.last_name ?? ""
+                          }`.trim() || "Guest"}
                         </Title>
                       ) : (
                         <Group noWrap>
