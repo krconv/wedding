@@ -10,7 +10,7 @@
 
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
-import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
+import { createHandlerBoundToURL } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
 
@@ -22,13 +22,14 @@ clientsClaim();
 // Their URLs are injected into the manifest variable below.
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
-precacheAndRoute(
-  self.__WB_MANIFEST.filter((entry) =>
-    typeof entry === "string"
-      ? !entry.includes("index.html")
-      : !entry.url.includes("index.html")
-  )
-);
+console.debug("Would have precached:", self.__WB_MANIFEST);
+caches.keys().then((cacheKeys) => {
+  for (const cacheKey of cacheKeys) {
+    if (cacheKey.includes("precache")) {
+      caches.delete(cacheKey);
+    }
+  }
+});
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
