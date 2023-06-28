@@ -9,6 +9,7 @@ import { analytics } from "./utils";
 import { Updates } from "./components/Updates";
 import { Registry } from "./components/Registry";
 import { Faqs } from "./components/Faqs";
+import { Photos } from "./components/Photos";
 
 analytics.init();
 
@@ -19,6 +20,7 @@ export const App: React.FC = () => {
       <Details />
       <Updates />
       <Schedule />
+      <Photos />
       <Faqs />
       <Registry />
       <CountDown />

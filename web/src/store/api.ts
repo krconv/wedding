@@ -3,13 +3,14 @@ import dayjs from "dayjs";
 import {
   ApiClient,
   ApiError,
-  CancelablePromise,
   CancelError,
+  CancelablePromise,
   Event,
   Faq,
   GuestGroup,
   GuestGroupSearchResult,
   GuestGroupUpdate,
+  PhotoAlbum,
   Registry,
   UpdateMessage,
 } from "../api";
@@ -97,6 +98,15 @@ export const api = createApi({
         expectedStatusCodes: [200, 404],
       }),
     }),
+
+    /**
+     * Photo Endpoints
+     */
+    getPhotos: builder.query<PhotoAlbum, {}>({
+      query: () => ({
+        method: ({ photo }) => photo.getPhotos(),
+      }),
+    }),
   }),
 });
 
@@ -162,4 +172,5 @@ export const {
   useGetScheduleQuery,
   useGetFaqsQuery,
   useGetUpdateMessageQuery,
+  useGetPhotosQuery,
 } = api;

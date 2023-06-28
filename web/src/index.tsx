@@ -3,6 +3,7 @@ import { Profiler } from "@sentry/react";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import calendar from "dayjs/plugin/calendar";
+import utc from "dayjs/plugin/utc";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
@@ -15,6 +16,7 @@ import { sentry, theme, worker } from "./utils";
 sentry.init();
 worker.init();
 
+dayjs.extend(utc);
 dayjs.extend(calendar);
 dayjs.extend(advancedFormat);
 

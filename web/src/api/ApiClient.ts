@@ -6,6 +6,7 @@ import type { OpenAPIConfig } from "./core/OpenAPI";
 import { AxiosHttpRequest } from "./core/AxiosHttpRequest";
 
 import { FaqService } from "./services/FaqService";
+import { PhotoService } from "./services/PhotoService";
 import { RegistryService } from "./services/RegistryService";
 import { RsvpService } from "./services/RsvpService";
 import { ScheduleService } from "./services/ScheduleService";
@@ -14,6 +15,7 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
 export class ApiClient {
   public readonly faq: FaqService;
+  public readonly photo: PhotoService;
   public readonly registry: RegistryService;
   public readonly rsvp: RsvpService;
   public readonly schedule: ScheduleService;
@@ -37,6 +39,7 @@ export class ApiClient {
     });
 
     this.faq = new FaqService(this.request);
+    this.photo = new PhotoService(this.request);
     this.registry = new RegistryService(this.request);
     this.rsvp = new RsvpService(this.request);
     this.schedule = new ScheduleService(this.request);

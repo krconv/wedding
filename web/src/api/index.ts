@@ -21,6 +21,8 @@ export type { GuestGroupUpdate } from "./models/GuestGroupUpdate";
 export type { HTTPValidationError } from "./models/HTTPValidationError";
 export type { Invitation } from "./models/Invitation";
 export type { MealOption } from "./models/MealOption";
+export type { Photo } from "./models/Photo";
+export type { PhotoAlbum } from "./models/PhotoAlbum";
 export type { Question } from "./models/Question";
 export type { Registry } from "./models/Registry";
 export type { RegistryItem } from "./models/RegistryItem";
@@ -30,6 +32,7 @@ export type { UpdateMessage } from "./models/UpdateMessage";
 export type { ValidationError } from "./models/ValidationError";
 
 export { FaqService } from "./services/FaqService";
+export { PhotoService } from "./services/PhotoService";
 export { RegistryService } from "./services/RegistryService";
 export { RsvpService } from "./services/RsvpService";
 export { ScheduleService } from "./services/ScheduleService";

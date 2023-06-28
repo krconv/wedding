@@ -2,7 +2,7 @@ import asyncio
 
 import fastapi
 
-from . import config, faqs, registry, rsvp, schedule, utils
+from . import config, faqs, registry, rsvp, schedule, utils, photos
 
 utils.sentry.init()
 
@@ -25,6 +25,7 @@ async def shutdown():
         rsvp.deps.zola_client,
         schedule.deps.zola_client,
         faqs.deps.zola_client,
+        photos.deps.dropevent_client 
     ]
 
     async def close_client_if_needed(client):
@@ -43,3 +44,4 @@ app.include_router(registry.routes.router)
 app.include_router(rsvp.routes.router)
 app.include_router(schedule.routes.router)
 app.include_router(faqs.routes.router)
+app.include_router(photos.routes.router)
