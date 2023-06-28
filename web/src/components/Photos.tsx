@@ -52,10 +52,6 @@ export const Photos: React.FC<{}> = () => {
 
   const [selected, setSelected] = useState<Photo | null>(null);
 
-  if (!photos.data) {
-    return null;
-  }
-
   return (
     <>
       <Box id="photos" ref={ref} pt={32} pb={64}>
@@ -81,26 +77,28 @@ export const Photos: React.FC<{}> = () => {
               photos/videos that you take as well!
             </Text>
 
-            <Center>
-              <Group>
-                <Button
-                  size="lg"
-                  mt="md"
-                  component="a"
-                  href={photos.data.upload_link}
-                  target="_blank"
-                  leftIcon={<IconCamera />}
-                  mb="xl"
-                >
-                  Add your photos
-                </Button>
-              </Group>
-            </Center>
+            {photos.data != null && (
+              <Center>
+                <Group>
+                  <Button
+                    size="lg"
+                    mt="md"
+                    component="a"
+                    href={photos.data.upload_link}
+                    target="_blank"
+                    leftIcon={<IconCamera />}
+                    mb="xl"
+                  >
+                    Add your photos
+                  </Button>
+                </Group>
+              </Center>
+            )}
           </Stack>
         </Container>
         <Container size="lg">
           <Stack>
-            {photos.isLoading ? (
+            {photos.isLoading || photos.data == null ? (
               <Center>
                 <Loader variant="dots" />
               </Center>
