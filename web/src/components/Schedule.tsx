@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  Center,
   Container,
   Group,
   Skeleton,
@@ -7,6 +9,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { IconBus } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { range } from "lodash";
 import groupBy from "lodash/groupBy";
@@ -53,6 +56,18 @@ export const Schedule: React.FC<{}> = () => {
             >
               Schedule
             </Title>
+
+            <Center>
+              <Button
+                component="a"
+                href="/bus-schedule.pdf"
+                target="_blank"
+                size="md"
+                leftIcon={<IconBus />}
+              >
+                View Bus Schedule
+              </Button>
+            </Center>
 
             {!events.isSuccess
               ? range(0, 4).map((day) => (
