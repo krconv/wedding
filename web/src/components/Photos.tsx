@@ -99,7 +99,7 @@ export const Photos: React.FC<{}> = () => {
         <Container size="lg">
           <Stack>
             {photos.isLoading || photos.data == null ? (
-              <Center>
+              <Center mt="lg">
                 <Loader variant="dots" />
               </Center>
             ) : (
@@ -151,7 +151,7 @@ export const Photos: React.FC<{}> = () => {
             Uploaded by {selected?.uploader}{" "}
             {dayjs(selected?.uploaded_at).calendar(null, {
               sameDay: "[today at] h:mma",
-              lastDay: "[yesterday at h:mma]",
+              lastDay: "[yesterday at] h:mma",
               lastWeek: "[last] dddd [at] h:mma",
               sameElse: "[on] MM/DD/YYYY",
             })}
@@ -160,7 +160,7 @@ export const Photos: React.FC<{}> = () => {
                 ; taken{" "}
                 {dayjs(selected?.taken_at).calendar(null, {
                   sameDay: "[today at] h:mma",
-                  lastDay: "[yesterday at h:mma]",
+                  lastDay: "[yesterday at] h:mma",
                   lastWeek: "[last] dddd [at] h:mma",
                   sameElse: "[on] MM/DD/YYYY",
                 })}

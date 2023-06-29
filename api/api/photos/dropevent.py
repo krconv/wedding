@@ -1,4 +1,4 @@
-import decimal
+import datetime
 import typing
 
 import fastapi
@@ -41,11 +41,14 @@ class DropeventClient:
     def _map_photo(self, data: dict) -> schemas.Photo:
         return schemas.Photo(
             id=data["id"],
-            thumbnail_src=data["mediumSquare"],
+            thumbnail_src=data["medium"],
             original_src=data["originalURL"],
-            uploaded_at=data["uploaded"],
+            uploaded_at=datetime.datetime.fromisoformat(
+                data["uploaded"].replace("Z", "")
+            )
+            - datetime.timedelta(hours=4),
             uploader=data["email"],
-            taken_at=data["taken"],
+            taken_at=datetime.datetime.fromisoformat(data["taken"].replace("Z", "")),
             caption=data["caption"],
         )
 
