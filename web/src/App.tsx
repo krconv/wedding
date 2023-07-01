@@ -1,15 +1,16 @@
-import React from "react";
 import { AppShell } from "@mantine/core";
-import { Landing } from "./components/Landing";
+import dayjs from "dayjs";
+import React from "react";
+import Confetti from "react-confetti";
 import { Details } from "./components/Details";
-import { Schedule } from "./components/Schedule";
-import { Footer } from "./components/Footer";
-import { CountDown } from "./components/CountDown";
-import { analytics } from "./utils";
-import { Updates } from "./components/Updates";
-import { Registry } from "./components/Registry";
 import { Faqs } from "./components/Faqs";
+import { Footer } from "./components/Footer";
+import { Landing } from "./components/Landing";
 import { Photos } from "./components/Photos";
+import { Registry } from "./components/Registry";
+import { Schedule } from "./components/Schedule";
+import { Updates } from "./components/Updates";
+import { analytics } from "./utils";
 
 analytics.init();
 
@@ -23,7 +24,7 @@ export const App: React.FC = () => {
       <Photos />
       <Faqs />
       <Registry />
-      <CountDown />
+      {dayjs().isSame("2023-07-01", "day") && <Confetti />}
       <Footer />
     </AppShell>
   );
