@@ -1,7 +1,5 @@
 import { AppShell } from "@mantine/core";
-import dayjs from "dayjs";
 import React from "react";
-import Confetti from "react-confetti";
 import { Details } from "./components/Details";
 import { Faqs } from "./components/Faqs";
 import { Footer } from "./components/Footer";
@@ -24,7 +22,6 @@ export const App: React.FC = () => {
       <Photos />
       <Faqs />
       <Registry />
-      {dayjs().isSame("2023-07-01", "day") && <Confetti />}
       <Footer />
     </AppShell>
   );

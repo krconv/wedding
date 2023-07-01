@@ -1,6 +1,7 @@
 import {
   BackgroundImage,
   Button,
+  Center,
   Container,
   createStyles,
   Flex,
@@ -11,7 +12,9 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { ReactNode, useCallback, useRef } from "react";
+import dayjs from "dayjs";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import ConfettiExplosion from "react-confetti-explosion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Cover, Logo } from "../assets";
 import { analytics } from "../utils";
@@ -33,12 +36,29 @@ export const Landing: React.FC = () => {
   const { classes } = useStyles();
   const ref = useRef<HTMLDivElement>(null);
   analytics.useTrackView("Landing", ref);
+  const [confetti, setConfetti] = useState(false);
+
+  useEffect(function startConfettiAfterAMoment() {
+    if (dayjs().isSame("2023-07-01", "day")) {
+      setTimeout(() => setConfetti(true), 100);
+    }
+  }, []);
 
   return (
-    <Stack id="landing" ref={ref} className={classes.root}>
-      <Header />
-      <BackgroundImage className={classes.image} src={Cover} />
-    </Stack>
+    <>
+      {confetti && (
+        <Center>
+          <ConfettiExplosion
+            force={0.4}
+            onComplete={() => setConfetti(false)}
+          />
+        </Center>
+      )}
+      <Stack id="landing" ref={ref} className={classes.root}>
+        <Header />
+        <BackgroundImage className={classes.image} src={Cover} />
+      </Stack>
+    </>
   );
 };
 
