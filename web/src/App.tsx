@@ -1,12 +1,10 @@
 import { AppShell } from "@mantine/core";
 import React from "react";
 import { Details } from "./components/Details";
-import { Faqs } from "./components/Faqs";
 import { Footer } from "./components/Footer";
 import { Landing } from "./components/Landing";
 import { Photos } from "./components/Photos";
 import { Registry } from "./components/Registry";
-import { Schedule } from "./components/Schedule";
 import { Updates } from "./components/Updates";
 import { analytics } from "./utils";
 
@@ -18,9 +16,9 @@ export const App: React.FC = () => {
       <Landing />
       <Details />
       <Updates />
-      <Schedule />
+      {/* <Schedule /> */}
       <Photos />
-      <Faqs />
+      {/* <Faqs /> */}
       <Registry />
       <Footer />
     </AppShell>

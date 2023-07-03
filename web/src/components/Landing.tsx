@@ -126,9 +126,9 @@ const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
       sx={(theme) => ({ gap: theme.spacing.xl })}
     >
       <Group spacing="xl">
-        <Link text="Schedule" elementId="schedule" />
+        {/* <Link text="Schedule" elementId="schedule" /> */}
         <Link text="Photos" elementId="photos" />
-        <Link text="FAQs" elementId="faqs" />
+        {/* <Link text="FAQs" elementId="faqs" /> */}
         <Link text="Registry" elementId="registry" />
       </Group>
       <Button size="md" onClick={() => onOpenRsvpModal()}>
