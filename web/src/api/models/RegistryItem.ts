@@ -8,5 +8,6 @@ export type RegistryItem = {
   brand?: string;
   price?: number;
   image_link: string;
+  completion_percentage: number;
   buy_link?: string;
 };

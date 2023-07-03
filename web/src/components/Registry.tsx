@@ -57,6 +57,7 @@ export const Registry: React.FC<{}> = () => {
                   </AspectRatio>
                 ))
               : registry.data?.items
+                  .filter((item) => item.completion_percentage < 100)
                   .slice(0, 8)
                   .map((item) => <Item key={item.id} item={item} />)}
           </SimpleGrid>

@@ -1,4 +1,5 @@
 import decimal
+
 import pydantic
 
 
@@ -8,6 +9,7 @@ class RegistryItem(pydantic.BaseModel):
     brand: str | None
     price: decimal.Decimal | None
     image_link: str
+    completion_percentage: float
 
     buy_link: str = ""
 

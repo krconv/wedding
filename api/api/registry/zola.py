@@ -2,7 +2,6 @@ import decimal
 import typing
 
 import fastapi
-import httpx
 
 from .. import utils
 from . import schemas
@@ -40,5 +39,6 @@ class ZolaClient(utils.zola.ZolaClientBase):
             price=decimal.Decimal(data["price"])
             if not data["contributions"]["hide_contributions"]
             else None,
+            completion_percentage=data["contributions"]["percent_complete"],
             image_link=data["images"][0]["medium"],
         )
