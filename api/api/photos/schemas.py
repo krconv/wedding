@@ -4,7 +4,7 @@ import decimal
 import pydantic
 
 
-class Photo(pydantic.BaseModel):
+class DropeventPhoto(pydantic.BaseModel):
     id: str
 
     thumbnail_src: str
@@ -25,8 +25,17 @@ class Photo(pydantic.BaseModel):
         }
 
 
-class PhotoAlbum(pydantic.BaseModel):
-    album_link: str = "https://dropevent.com/maddyandkodey"
-    upload_link: str = "https://dropevent.com/maddyandkodey/upload"
+class PictimePhoto(pydantic.BaseModel):
+    id: str
 
-    photos: list[Photo]
+    thumbnail_src: str
+    external_link: str | None
+
+
+class PhotoAlbum(pydantic.BaseModel):
+    community_album_link: str
+    community_upload_link: str = "https://dropevent.com/maddyandkodey/upload"
+    community_photos: list[DropeventPhoto]
+
+    photographer_album_link: str
+    photographer_photos: list[PictimePhoto]

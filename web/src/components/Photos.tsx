@@ -1,24 +1,32 @@
 import {
+  BackgroundImage,
+  Badge,
   Box,
   Button,
   Center,
   Container,
   Group,
-  Image,
+  ImageProps,
   Loader,
-  Modal,
+  Image as MtImage,
   Stack,
   Text,
   Title,
+  Transition,
   useMantineTheme,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import { IconCamera } from "@tabler/icons-react";
+import { useElementSize, useMediaQuery } from "@mantine/hooks";
+import { IconCamera, IconLink } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { chain } from "lodash";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Photo } from "../api";
 import { useGetPhotosQuery } from "../store/api";
 import { analytics } from "../utils";
 import { Divider } from "./Divider";
@@ -39,18 +47,25 @@ export const Photos: React.FC<{}> = () => {
 
   const photos = useGetPhotosQuery({});
   const sortedPhotos = useMemo(() => {
-    const maxPhotos = 30;
     if (!photos.data) {
       return [];
     }
-    return chain(photos.data.photos)
+    return chain(photos.data.community_photos)
       .sortBy((photo) => dayjs(photo.uploaded_at).unix())
       .reverse()
-      .take(maxPhotos)
       .value();
   }, [photos.data]);
 
-  const [selected, setSelected] = useState<Photo | null>(null);
+  const photographerPhotos = useRotatingPhotos({
+    photos: photos.data?.photographer_photos ?? null,
+    size: 3,
+  });
+  const communityPhotos = useRotatingPhotos({
+    photos: sortedPhotos,
+    size: 12,
+  });
+
+  const size = useElementSize();
 
   return (
     <>
@@ -70,106 +85,319 @@ export const Photos: React.FC<{}> = () => {
               <Text
                 variant="link"
                 component="a"
-                href={photos.data?.upload_link}
+                href={photos.data?.community_upload_link}
               >
                 share
               </Text>{" "}
               photos/videos that you take as well!
             </Text>
-
-            {photos.data != null && (
-              <Center>
-                <Group>
-                  <Button
-                    size="lg"
-                    mt="md"
-                    component="a"
-                    href={photos.data.upload_link}
-                    target="_blank"
-                    leftIcon={<IconCamera />}
-                    mb="xl"
-                  >
-                    Add your photos
-                  </Button>
-                </Group>
-              </Center>
-            )}
-          </Stack>
-        </Container>
-        <Container size="lg">
-          <Stack>
-            {photos.isLoading || photos.data == null ? (
+            {(photos.isLoading || photos.data == null) && (
               <Center mt="lg">
                 <Loader variant="dots" />
               </Center>
-            ) : (
-              <>
-                <Group position="center">
-                  {sortedPhotos.map((photo) => (
-                    <Image
-                      key={photo.id}
-                      src={photo.thumbnail_src}
-                      width={isMobile ? "150px" : "200px"}
-                      height={isMobile ? "150px" : "200px"}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setSelected(photo)}
-                    />
-                  ))}
-                </Group>
-                {photos.data?.photos.length > sortedPhotos.length && (
-                  <Center>
-                    <Button
-                      size="lg"
-                      mt="md"
-                      component="a"
-                      href={photos.data.album_link}
-                      target="_blank"
-                    >
-                      See more
-                    </Button>
-                  </Center>
-                )}
-              </>
             )}
           </Stack>
         </Container>
+        {photographerPhotos.isLoading || (
+          <Container size="lg" mt="md">
+            <Stack>
+              <Center>
+                <Stack spacing={4}>
+                  <Badge size="xl">
+                    <Text size="lg">Professional Captures</Text>
+                  </Badge>
+                  <Text align="center" italic>
+                    More to come in September
+                  </Text>
+                </Stack>
+              </Center>
+              <Group ref={size.ref} position="center" noWrap>
+                {photographerPhotos
+                  .photos!.slice(0, isMobile ? 2 : 3)
+                  .map((photo, i) => (
+                    <a
+                      key={i}
+                      href={photo.external_link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <TransitionedImage
+                        src={photo?.thumbnail_src!}
+                        width={
+                          isMobile ? size.width / 2 - 8 : size.width / 3 - 11
+                        }
+                        height={
+                          isMobile ? size.width / 2 - 8 : size.width / 3 - 11
+                        }
+                      />
+                    </a>
+                  ))}
+              </Group>
+            </Stack>
+          </Container>
+        )}
+        {communityPhotos.isLoading || (
+          <Container size="lg" mt="xl">
+            <Stack>
+              <Center>
+                <Badge size="xl">
+                  <Text size="lg">Shared Memories</Text>
+                </Badge>
+              </Center>
+              <Group position="center">
+                {communityPhotos.photos!.map((photo, i) => (
+                  <a
+                    key={i}
+                    href={photo.external_link}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <TransitionedImage
+                      src={photo.thumbnail_src!}
+                      width={
+                        isMobile ? size.width / 3 - 11 : size.width / 4 - 12
+                      }
+                      height={
+                        isMobile ? size.width / 3 - 11 : size.width / 4 - 12
+                      }
+                    />
+                  </a>
+                ))}
+              </Group>
+              <Center mt="md">
+                <Group position="center">
+                  <Button
+                    size="lg"
+                    component="a"
+                    href={photos.data!.community_upload_link}
+                    target="_blank"
+                    leftIcon={<IconCamera />}
+                  >
+                    Add your photos
+                  </Button>
+                  <Button
+                    size="lg"
+                    component="a"
+                    href={photos.data!.community_album_link}
+                    leftIcon={<IconLink />}
+                    target="_blank"
+                  >
+                    See more
+                  </Button>
+                </Group>
+              </Center>
+            </Stack>
+          </Container>
+        )}
       </Box>
-      <Modal
-        withCloseButton={false}
-        opened={selected != null}
-        size="xl"
-        onClose={() => setSelected(null)}
-      >
-        <Stack>
-          <Image src={selected?.original_src} />
-          {selected?.caption && (
-            <Text align="center" size="lg">
-              {selected.caption}
-            </Text>
-          )}
-          <Text align="center" color="gray">
-            Uploaded by {selected?.uploader}{" "}
-            {dayjs(selected?.uploaded_at).calendar(null, {
-              sameDay: "[today at] h:mma",
-              lastDay: "[yesterday at] h:mma",
-              lastWeek: "[last] dddd [at] h:mma",
-              sameElse: "[on] MM/DD/YYYY",
-            })}
-            {selected?.uploaded_at !== selected?.taken_at && (
-              <>
-                ; taken{" "}
-                {dayjs(selected?.taken_at).calendar(null, {
-                  sameDay: "[today at] h:mma",
-                  lastDay: "[yesterday at] h:mma",
-                  lastWeek: "[last] dddd [at] h:mma",
-                  sameElse: "[on] MM/DD/YYYY",
-                })}
-              </>
-            )}
-          </Text>
-        </Stack>
-      </Modal>
       <Divider />
     </>
+  );
+};
+
+function useRotatingPhotos<T extends { id: string; thumbnail_src: string }>({
+  photos,
+  size,
+}: {
+  photos: T[] | null;
+  size: number;
+}) {
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [baseIndex, setBaseIndex] = useState(-1);
+  const [randomRange, setRandomRange] = useState(-1);
+  const [selectedPhotos, setSelectedPhotos] = useState<T[] | null>(null);
+  const lastUpdatedSlots = useRef<number[]>([]);
+
+  const pickRandomPhoto = useCallback(
+    ({
+      photos,
+      blocklist,
+      baseIndex,
+      randomRange,
+    }: {
+      photos: T[];
+      blocklist: T[];
+      baseIndex: number;
+      randomRange: number;
+    }) => {
+      let pickedPhoto: T;
+      let isAllowed = () => !blocklist.some(({ id }) => id === pickedPhoto.id);
+
+      do {
+        const randomOffset = Math.floor(Math.random() * randomRange);
+        pickedPhoto = photos[(baseIndex + randomOffset) % photos.length];
+      } while (!isAllowed());
+      return pickedPhoto;
+    },
+    []
+  );
+
+  const pickRandomSlot = useCallback(() => {
+    let pickedSlot: number;
+
+    do {
+      pickedSlot = Math.floor(Math.random() * size);
+    } while (lastUpdatedSlots.current.includes(pickedSlot));
+
+    lastUpdatedSlots.current.push(pickedSlot);
+    if (lastUpdatedSlots.current.length > size / 2) {
+      lastUpdatedSlots.current.shift();
+    }
+    return pickedSlot;
+  }, [size]);
+
+  useEffect(
+    function initialize() {
+      if (!isInitialized && (photos?.length ?? 0) > 0) {
+        setIsInitialized(true);
+        const baseIndex = Math.floor(Math.random() * photos?.length!);
+        setBaseIndex(baseIndex);
+        const randomRange = Math.max(photos?.length! / 4, size * 2);
+        setRandomRange(randomRange);
+        setTimeout(() => {
+          setSelectedPhotos(() => {
+            let selectedPhotos: T[] = [];
+            for (let i = 0; i < size; i++) {
+              selectedPhotos.push(
+                pickRandomPhoto({
+                  photos: photos!,
+                  blocklist: selectedPhotos,
+                  baseIndex: (baseIndex + i) % photos!.length,
+                  randomRange,
+                })
+              );
+            }
+            return selectedPhotos;
+          });
+        }, 1);
+      }
+    },
+    [isInitialized, size, photos, pickRandomPhoto]
+  );
+
+  const updateRandomPhotoSlot = useCallback(() => {
+    if (!isInitialized) {
+      return;
+    }
+    setSelectedPhotos((selectedPhotos) => {
+      const slotToUpdate = pickRandomSlot();
+      const newPhoto = pickRandomPhoto({
+        photos: photos!,
+        blocklist: selectedPhotos!,
+        baseIndex: (baseIndex + slotToUpdate) % photos!.length,
+        randomRange,
+      });
+      return selectedPhotos!.map((photo, i) => {
+        if (i === slotToUpdate) {
+          return newPhoto;
+        }
+        return photo;
+      });
+    });
+    setBaseIndex((baseIndex + 1) % photos!.length);
+  }, [
+    isInitialized,
+    photos,
+    baseIndex,
+    randomRange,
+    pickRandomPhoto,
+    pickRandomSlot,
+  ]);
+
+  useEffect(
+    function tick() {
+      if (!isInitialized) {
+        return;
+      }
+      const timeout = setInterval(updateRandomPhotoSlot, 15000 / size);
+      return () => clearInterval(timeout);
+    },
+    [size, isInitialized, updateRandomPhotoSlot]
+  );
+
+  return {
+    photos: selectedPhotos,
+    isLoading: !isInitialized || selectedPhotos == null,
+  };
+}
+
+const TransitionedImage = ({
+  src,
+  width,
+  height,
+  style,
+  onClick,
+}: {
+  src: string;
+  width: ImageProps["width"];
+  height: ImageProps["height"];
+  style?: ImageProps["style"];
+  onClick?: ImageProps["onClick"];
+}) => {
+  const transitionDuration = 1500;
+  const [transitioning, setTransitioning] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState<string | null>(null);
+  const loadingSrc = useRef<string | null>(null);
+  const [nextSrc, setNextSrc] = useState<string | null>(null);
+
+  const onImageLoad = useCallback(
+    (src: string) => {
+      if (loadingSrc.current === src) {
+        setNextSrc(src);
+        setTransitioning(true);
+      }
+    },
+    [loadingSrc]
+  );
+
+  useEffect(
+    function loadNextImage() {
+      if (loadingSrc.current === src || !src) {
+        return;
+      }
+      loadingSrc.current = src;
+      const img = new Image();
+      img.src = src;
+      img.onload = () => onImageLoad(src);
+    },
+    [src, onImageLoad, loadingSrc]
+  );
+
+  useEffect(
+    function clearNextImageAfterFade() {
+      if (!nextSrc) {
+        return;
+      }
+      const timeout = setTimeout(() => {
+        setCurrentSrc(nextSrc);
+        setNextSrc(null);
+        setTransitioning(false);
+      }, transitionDuration);
+      return () => clearTimeout(timeout);
+    },
+    [currentSrc, nextSrc]
+  );
+
+  return (
+    <BackgroundImage
+      src={currentSrc ?? ""}
+      style={{ width: width + "px", height: height + "px", ...(style ?? {}) }}
+      onClick={onClick}
+    >
+      <Transition
+        mounted={transitioning}
+        duration={transitionDuration}
+        transition="fade"
+      >
+        {(styles) => (
+          <MtImage
+            src={nextSrc ?? loadingSrc.current}
+            width={width}
+            height={height}
+            style={styles}
+          />
+        )}
+      </Transition>
+    </BackgroundImage>
   );
 };

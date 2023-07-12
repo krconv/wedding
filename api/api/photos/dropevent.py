@@ -12,7 +12,7 @@ class DropeventClient:
     def __init__(self, client: httpx.AsyncClient | None = None):
         self._client = client or httpx.AsyncClient()
 
-    async def fetch_photos(self) -> schemas.PhotoAlbum:
+    async def fetch_photos(self) -> tuple[str, str, list[schemas.DropeventPhoto]]:
         data = await self._fetch_event_data()
 
         return self._map_event_data(data)
@@ -25,12 +25,16 @@ class DropeventClient:
             raise Exception("Error while fetching from Dropevent: " + response.text)
         return response.json()
 
-    def _map_event_data(self, data: dict) -> schemas.PhotoAlbum:
-        return schemas.PhotoAlbum(
-            photos=self._map_photos(data),
+    def _map_event_data(
+        self, data: dict
+    ) -> tuple[str, str, list[schemas.DropeventPhoto]]:
+        return (
+            "https://dropevent.com/maddyandkodey",
+            "https://dropevent.com/maddyandkodey/upload",
+            self._map_photos(data),
         )
 
-    def _map_photos(self, data: list[dict]) -> list[schemas.Photo]:
+    def _map_photos(self, data: list[dict]) -> list[schemas.DropeventPhoto]:
         return [
             self._map_photo(photo_data)
             for folder_data in data["folders"]
@@ -38,8 +42,8 @@ class DropeventClient:
             if not photo_data["isVideo"]
         ]
 
-    def _map_photo(self, data: dict) -> schemas.Photo:
-        return schemas.Photo(
+    def _map_photo(self, data: dict) -> schemas.DropeventPhoto:
+        return schemas.DropeventPhoto(
             id=data["id"],
             thumbnail_src=data["medium"],
             original_src=data["originalURL"],
