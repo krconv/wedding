@@ -1,6 +1,5 @@
 import {
   BackgroundImage,
-  Button,
   Center,
   Container,
   createStyles,
@@ -129,11 +128,11 @@ const Nav: React.FC<{ onOpenRsvpModal: () => void }> = ({
         {/* <Link text="Schedule" elementId="schedule" /> */}
         <Link text="Photos" elementId="photos" />
         {/* <Link text="FAQs" elementId="faqs" /> */}
-        <Link text="Registry" elementId="registry" />
+        {/* <Link text="Registry" elementId="registry" /> */}
       </Group>
-      <Button size="md" onClick={() => onOpenRsvpModal()}>
+      {/* <Button size="md" onClick={() => onOpenRsvpModal()}>
         RSVP
-      </Button>
+      </Button> */}
     </Flex>
   );
 };

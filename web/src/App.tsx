@@ -4,7 +4,6 @@ import { Details } from "./components/Details";
 import { Footer } from "./components/Footer";
 import { Landing } from "./components/Landing";
 import { Photos } from "./components/Photos";
-import { Registry } from "./components/Registry";
 import { Updates } from "./components/Updates";
 import { analytics } from "./utils";
 
@@ -19,7 +18,7 @@ export const App: React.FC = () => {
       {/* <Schedule /> */}
       <Photos />
       {/* <Faqs /> */}
-      <Registry />
+      {/* <Registry /> */}
       <Footer />
     </AppShell>
   );
