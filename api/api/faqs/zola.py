@@ -21,7 +21,12 @@ class ZolaClient(utils.zola.ZolaClientBase):
 
     async def get_update_message(self) -> schemas.UpdateMessage | None:
         raw_data = await self._get_raw_data()
-        show_message = raw_data["props"]["pageProps"]["wedding"]["enable_cms_banner"]
+        try:
+            show_message = raw_data["props"]["pageProps"]["wedding"][
+                "enable_cms_banner"
+            ]
+        except:
+            show_message = False
         if not show_message:
             return None
         match = re.fullmatch(

@@ -80,17 +80,6 @@ export const Photos: React.FC<{}> = () => {
             >
               Photos
             </Title>
-            <Text align="center" size="lg">
-              We'll upload photos of the wedding here. Please{" "}
-              <Text
-                variant="link"
-                component="a"
-                href={photos.data?.community_upload_link}
-              >
-                share
-              </Text>{" "}
-              photos/videos that you take as well!
-            </Text>
             {(photos.isLoading || photos.data == null) && (
               <Center mt="lg">
                 <Loader variant="dots" />
@@ -102,36 +91,29 @@ export const Photos: React.FC<{}> = () => {
           <Container size="lg" mt="md">
             <Stack>
               <Center>
-                <Stack spacing={4}>
-                  <Badge size="xl">
-                    <Text size="lg">Professional Captures</Text>
-                  </Badge>
-                  <Text align="center" italic>
-                    More to come in September
-                  </Text>
-                </Stack>
+                <Badge size="xl">
+                  <Text size="lg">Professional Captures</Text>
+                </Badge>
               </Center>
-              <Group ref={size.ref} position="center" noWrap>
-                {photographerPhotos
-                  .photos!.slice(0, isMobile ? 2 : 3)
-                  .map((photo, i) => (
-                    <a
-                      key={i}
-                      href={photo.external_link}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <TransitionedImage
-                        src={photo?.thumbnail_src!}
-                        width={
-                          isMobile ? size.width / 2 - 8 : size.width / 3 - 11
-                        }
-                        height={
-                          isMobile ? size.width / 2 - 8 : size.width / 3 - 11
-                        }
-                      />
-                    </a>
-                  ))}
+              <Group ref={size.ref} position="center">
+                {photographerPhotos.photos!.map((photo, i) => (
+                  <a
+                    key={i}
+                    href={photo.external_link}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <TransitionedImage
+                      src={photo?.thumbnail_src!}
+                      width={
+                        isMobile ? size.width / 2 - 8 : size.width / 3 - 11
+                      }
+                      height={
+                        isMobile ? size.width / 2 - 8 : size.width / 3 - 11
+                      }
+                    />
+                  </a>
+                ))}
               </Group>
             </Stack>
           </Container>

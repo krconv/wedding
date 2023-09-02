@@ -6,7 +6,7 @@ import httpx
 
 from . import schemas
 
-_PUBLIC_GALLERY_URL = "https://kelseyconverse.pic-time.com/-maddykodeywedding/gallery?locker=AAAAADgAAAA0_LBqCr3lAbzeNxuX"
+_PUBLIC_GALLERY_URL = "https://kelseyconverse.pic-time.com/fvETUoEULw8lo"
 _GALLERY_BASE_URL = (
     "https://pictime7eus1public-m.azureedge.net/pictures/31/329/31329644/atv3kvs9p5ki"
 )
@@ -24,7 +24,7 @@ class PictimeClient:
     async def _fetch_gallery_data(self) -> dict[str, typing.Any]:
         ts = self._generate_timestamp()
         response = await self._client.get(
-            f"{_GALLERY_BASE_URL}/job_gallery_623284263.json.txt?ts={ts}"
+            f"{_GALLERY_BASE_URL}/gallery.json.txt?ts={ts}"
         )
 
         if response.status_code != fastapi.status.HTTP_200_OK:
@@ -38,8 +38,12 @@ class PictimeClient:
         )
 
     def _map_photos(self, data: list[dict]) -> list[schemas.PictimePhoto]:
+        hidden_photos = set(data["rstPhotos"])
         return [
-            self._build_photo(photo_id + data["minId"]) for photo_id in data["photoIds"]
+            self._build_photo(scene["photos"][i] + data["minId"])
+            for scene in data["scenes"]
+            for i in range(0, len(scene["photos"]) if "photos" in scene else 0, 4)
+            if scene["photos"][i] not in hidden_photos 
         ]
 
     def _build_photo(self, photo_id: int) -> schemas.PictimePhoto:
